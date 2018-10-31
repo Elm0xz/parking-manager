@@ -14,7 +14,7 @@ public class ParkingSessionMapper {
     @Autowired
     public ParkingSessionMapper(final ModelMapper modelMapper) {
         this.modelMapper = modelMapper;
-        modelMapper.addConverter(new ParkingStartRequestToSessionConverter());
+        modelMapper.addConverter(new ParkingStartDTOToParkingSessionConverter());
     }
 
     public ParkingSession fromParkingStartRequestDTO(final ParkingStartDTO parkingStartDTO) {

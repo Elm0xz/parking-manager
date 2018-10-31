@@ -10,7 +10,7 @@ public class MapperConfig {
     @Bean
     public ModelMapper requestModelMapper() {
         ModelMapper modelMapper = new ModelMapper();
-        modelMapper.addConverter(new ParkingStartRequestToSessionConverter());
+        modelMapper.addConverter(new ParkingStartDTOToParkingSessionConverter());
         return modelMapper;
     }
 }

@@ -6,7 +6,7 @@ import com.pretz.parkingmanager.dto.ParkingStartDTO;
 import org.modelmapper.Converter;
 import org.modelmapper.spi.MappingContext;
 
-public class ParkingStartRequestToSessionConverter
+public class ParkingStartDTOToParkingSessionConverter
         implements Converter<ParkingStartDTO, ParkingSession> {
 
     @Override
