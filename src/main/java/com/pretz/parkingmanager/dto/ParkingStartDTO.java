@@ -10,19 +10,21 @@ import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 
-//TODO validation values should be moved somewhere else
 @Getter
 @Builder(builderClassName = "ParkingStartRequestDTOBuilder")
 @JsonDeserialize(builder = ParkingStartDTO.ParkingStartRequestDTOBuilder.class)
 public class ParkingStartDTO {
 
+    private static final long PARKING_RATES_NR = 2;
+    private static final String BASIC_VEH_ID_REGEX = "[A-Z]{3}[0-9]{4}";
+
     @NotNull
-    @Pattern(regexp = "[A-Z]{3}[0-9]{4}")
+    @Pattern(regexp = BASIC_VEH_ID_REGEX)
     private final String vehicleId;
 
     @NotNull
     @Min(value = 1)
-    @Max(value = 2)
+    @Max(value = PARKING_RATES_NR)
     private final long parkingRateId;
 
     @JsonPOJOBuilder(withPrefix = "")
