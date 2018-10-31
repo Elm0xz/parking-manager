@@ -1,11 +1,10 @@
 package com.pretz.parkingmanager.service;
 
 import com.pretz.parkingmanager.domain.ParkingSession;
-import com.pretz.parkingmanager.dto.ParkingStartRequestDTO;
+import com.pretz.parkingmanager.dto.ParkingStartDTO;
 import com.pretz.parkingmanager.exception.ParkingSessionAlreadyActiveException;
 import com.pretz.parkingmanager.mapper.ParkingSessionMapper;
 import com.pretz.parkingmanager.repository.ParkingSessionRepository;
-
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -19,22 +18,20 @@ public class ParkingMeterService {
     private final ParkingSessionRepository parkingSessionRepository;
     private final ParkingSessionMapper parkingSessionMapper;
 
-    //TODO this could be changed with this exception handler from spring
-    public void startParkingMeter(ParkingStartRequestDTO parkingStartRequestDTO) {
+    public void startParkingMeter(final ParkingStartDTO parkingStartDTO) {
 
-        String vehicleId = parkingStartRequestDTO.getVehicleId();
+        String vehicleId = parkingStartDTO.getVehicleId();
 
         if (isParkingSessionAlreadyActive(vehicleId)) {
             throw new ParkingSessionAlreadyActiveException();
-        }
-        else {
-            ParkingSession parkingSession = parkingSessionMapper.fromParkingStartRequestDTO(parkingStartRequestDTO);
+        } else {
+            ParkingSession parkingSession = parkingSessionMapper.fromParkingStartRequestDTO(parkingStartDTO);
             parkingSession.setStartTime(Timestamp.from(Instant.now()));
             parkingSessionRepository.save(parkingSession);
         }
     }
 
-    private boolean isParkingSessionAlreadyActive(String vehicleId) {
+    private boolean isParkingSessionAlreadyActive(final String vehicleId) {
         return parkingSessionRepository.findByVehicleIdAndStopTimeIsNull(vehicleId).isPresent();
     }
 }

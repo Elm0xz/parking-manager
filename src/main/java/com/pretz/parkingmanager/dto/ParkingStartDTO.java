@@ -10,10 +10,11 @@ import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 
+//TODO validation values should be moved somewhere else
 @Getter
 @Builder(builderClassName = "ParkingStartRequestDTOBuilder")
-@JsonDeserialize(builder = ParkingStartRequestDTO.ParkingStartRequestDTOBuilder.class)
-public class ParkingStartRequestDTO {
+@JsonDeserialize(builder = ParkingStartDTO.ParkingStartRequestDTOBuilder.class)
+public class ParkingStartDTO {
 
     @NotNull
     @Pattern(regexp = "[A-Z]{3}[0-9]{4}")
