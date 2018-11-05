@@ -6,11 +6,11 @@ import javax.persistence.*;
 import java.sql.Timestamp;
 
 @Builder
-@NoArgsConstructor
 @AllArgsConstructor
+@NoArgsConstructor(access = AccessLevel.PRIVATE)
 @Entity
 @Table(name = "PARKING_SESSION")
-public class ParkingSession {
+public final class ParkingSession {
 
     @Id
     @Column(name = "parking_session_id", updatable = false, nullable = false)
@@ -19,7 +19,6 @@ public class ParkingSession {
     private long id;
 
     @Column(name = "vehicle_id", updatable = false, nullable = false)
-    @Setter
     @Getter
     private String vehicleId;
 
@@ -36,7 +35,6 @@ public class ParkingSession {
     @Enumerated(EnumType.STRING)
     @Column(name = "parking_rate")
     @Getter
-    @Setter
     private ParkingRate parkingRate;
 
 }

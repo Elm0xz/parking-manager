@@ -1,7 +1,6 @@
 package com.pretz.parkingmanager.rest
 
 import com.pretz.parkingmanager.IntegrationTest
-import com.pretz.parkingmanager.UnitTest
 import org.junit.experimental.categories.Category
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc

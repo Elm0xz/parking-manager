@@ -12,17 +12,17 @@ public class ParkingStartDTOToParkingSessionConverter
     @Override
     public ParkingSession convert(final MappingContext<ParkingStartDTO, ParkingSession> mappingContext) {
 
-        ParkingSession destination = new ParkingSession();
         ParkingStartDTO source = mappingContext.getSource();
-        destination.setVehicleId(source.getVehicleId());
+        ParkingSession.ParkingSessionBuilder destination = ParkingSession.builder()
+                .vehicleId(source.getVehicleId());
 
         if (source.getParkingRateId() == 1) {
-            destination.setParkingRate(ParkingRate.REGULAR);
+            destination.parkingRate(ParkingRate.REGULAR);
         } else if (source.getParkingRateId() == 2) {
-            destination.setParkingRate(ParkingRate.DISABLED);
+            destination.parkingRate(ParkingRate.DISABLED);
         } else
-            destination.setParkingRate(ParkingRate.NONE);
+            destination.parkingRate(ParkingRate.NONE);
 
-        return destination;
+        return destination.build();
     }
 }
