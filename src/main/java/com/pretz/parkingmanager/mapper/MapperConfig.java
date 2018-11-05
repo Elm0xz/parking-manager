@@ -11,6 +11,7 @@ public class MapperConfig {
     public ModelMapper requestModelMapper() {
         ModelMapper modelMapper = new ModelMapper();
         modelMapper.addConverter(new ParkingStartDTOToParkingSessionConverter());
+        modelMapper.addConverter(new ParkingSessionToParkingMeterResponseDTOConverter());
         return modelMapper;
     }
 }

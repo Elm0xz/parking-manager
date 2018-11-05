@@ -31,11 +31,7 @@ public class ParkingMeterService {
             parkingSession.setStartTime(Timestamp.from(Instant.now()));
             parkingSession = parkingSessionRepository.save(parkingSession);
 
-            return ParkingMeterResponseDTO.builder()
-                    .vehicleId(parkingSession.getVehicleId())
-                    .parkingSessionId(parkingSession.getId())
-                    .timestamp(parkingSession.getStartTime())
-                    .build();
+            return parkingSessionMapper.fromParkingSession(parkingSession);
         }
     }
 

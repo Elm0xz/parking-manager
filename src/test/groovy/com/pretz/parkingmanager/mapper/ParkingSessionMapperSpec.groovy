@@ -3,11 +3,15 @@ package com.pretz.parkingmanager.mapper
 import com.pretz.parkingmanager.UnitTest
 import com.pretz.parkingmanager.domain.ParkingRate
 import com.pretz.parkingmanager.domain.ParkingSession
+import com.pretz.parkingmanager.dto.ParkingMeterResponseDTO
 import com.pretz.parkingmanager.dto.ParkingStartDTO
 import org.junit.experimental.categories.Category
 import org.modelmapper.ModelMapper
 import spock.lang.Specification
 import spock.lang.Unroll
+
+import java.sql.Timestamp
+import java.time.Instant
 
 import static net.java.quickcheck.generator.CombinedGeneratorsIterables.somePairs
 import static net.java.quickcheck.generator.PrimitiveGenerators.longs
@@ -18,16 +22,22 @@ class ParkingSessionMapperSpec extends Specification {
 
     ParkingSessionMapper parkingSessionMapper
     ParkingStartDTO.ParkingStartDTOBuilder parkingStartDTOBuilder
+    ParkingSession.ParkingSessionBuilder parkingSessionBuilder
 
     def setup() {
 
         ModelMapper testModelMapper = new ModelMapper()
         testModelMapper.addConverter(new ParkingStartDTOToParkingSessionConverter())
+        testModelMapper.addConverter(new ParkingSessionToParkingMeterResponseDTOConverter())
         parkingSessionMapper = new ParkingSessionMapper(testModelMapper)
 
         parkingStartDTOBuilder = ParkingStartDTO.builder()
                 .vehicleId("ABC1234")
                 .parkingRateId(1)
+
+        parkingSessionBuilder = ParkingSession.builder()
+                .vehicleId("EWE4567")
+                .id(1)
     }
 
     @Unroll
@@ -93,5 +103,22 @@ class ParkingSessionMapperSpec extends Specification {
 
         then:
         testParkingSession.getParkingRate() == ParkingRate.NONE
+    }
+
+    def "mapper should map ParkingSession to ParkingMeterResponseDTO with timestamp calculated from start time if stop time is null"() {
+
+        given:
+        ParkingSession testParkingSession = parkingSessionBuilder
+                .startTime(Timestamp.from(Instant.now()))
+                .stopTime(null)
+                .build()
+
+        when:
+        ParkingMeterResponseDTO testParkingMeterResponseDTO = parkingSessionMapper.fromParkingSession(testParkingSession)
+
+        then:
+        testParkingMeterResponseDTO.vehicleId == testParkingSession.vehicleId
+        testParkingMeterResponseDTO.parkingSessionId == testParkingSession.id
+        testParkingMeterResponseDTO.timestamp != null
     }
 }

@@ -7,9 +7,12 @@ import com.pretz.parkingmanager.dto.ParkingMeterResponseDTO
 import com.pretz.parkingmanager.dto.ParkingStartDTO
 import com.pretz.parkingmanager.exception.ParkingSessionAlreadyActiveException
 import com.pretz.parkingmanager.mapper.ParkingSessionMapper
+import com.pretz.parkingmanager.mapper.ParkingSessionToParkingMeterResponseDTOConverter
+import com.pretz.parkingmanager.mapper.ParkingStartDTOToParkingSessionConverter
 import com.pretz.parkingmanager.repository.ParkingSessionRepository
 import org.junit.Assert
 import org.junit.experimental.categories.Category
+import org.modelmapper.ModelMapper
 import spock.lang.Specification
 
 import java.sql.Timestamp
@@ -26,7 +29,12 @@ class ParkingMeterServiceSpec extends Specification {
 
     def setup() {
         parkingSessionRepository = Mock(ParkingSessionRepository.class)
-        parkingSessionMapper = Stub(ParkingSessionMapper.class)
+
+        ModelMapper modelMapper = new ModelMapper()
+        modelMapper.addConverter(new ParkingStartDTOToParkingSessionConverter())
+        modelMapper.addConverter(new ParkingSessionToParkingMeterResponseDTOConverter())
+
+        parkingSessionMapper = new ParkingSessionMapper(modelMapper)
 
         parkingMeterService = new ParkingMeterService(parkingSessionRepository, parkingSessionMapper)
     }
@@ -43,20 +51,18 @@ class ParkingMeterServiceSpec extends Specification {
                 .build()
 
         ParkingSession testParkingSession = ParkingSession.builder()
-        .vehicleId(testVehicleId)
-        .parkingRate(ParkingRate.REGULAR)
-        .build()
+                .vehicleId(testVehicleId)
+                .parkingRate(ParkingRate.REGULAR)
+                .startTime(Timestamp.from(Instant.now()))
+                .build()
 
-        parkingSessionMapper.fromParkingStartDTO(_) >> testParkingSession
         parkingSessionRepository.save(_ as ParkingSession) >> testParkingSession
-
         parkingSessionRepository.findByVehicleIdAndStopTimeIsNull(_ as String) >> Optional.empty()
 
         when:
         ParkingMeterResponseDTO parkingMeterResponseDTO = parkingMeterService.startParkingMeter(testParkingStartDTO)
 
         then:
-
         parkingMeterResponseDTO.vehicleId == testVehicleId
         Assert.assertNotNull(parkingMeterResponseDTO.parkingSessionId)
         Assert.assertNotNull(parkingMeterResponseDTO.timestamp)
@@ -72,10 +78,6 @@ class ParkingMeterServiceSpec extends Specification {
                 .parkingRateId(1)
                 .build()
 
-        parkingSessionMapper.fromParkingStartDTO(_) >> ParkingSession.builder()
-                .vehicleId(testVehicleId)
-                .parkingRate(ParkingRate.REGULAR)
-                .build()
         parkingSessionRepository.findByVehicleIdAndStopTimeIsNull(_) >> Optional.of(ParkingSession.builder()
                 .vehicleId(testVehicleId)
                 .startTime(Timestamp.from(Instant.now().minus(3, ChronoUnit.HOURS)))
