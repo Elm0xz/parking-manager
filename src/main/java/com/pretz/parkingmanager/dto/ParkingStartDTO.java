@@ -11,8 +11,8 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 
 @Getter
-@Builder(builderClassName = "ParkingStartRequestDTOBuilder")
-@JsonDeserialize(builder = ParkingStartDTO.ParkingStartRequestDTOBuilder.class)
+@Builder(builderClassName = "ParkingStartDTOBuilder")
+@JsonDeserialize(builder = ParkingStartDTO.ParkingStartDTOBuilder.class)
 public class ParkingStartDTO {
 
     private static final long PARKING_RATES_NR = 2;
@@ -28,6 +28,6 @@ public class ParkingStartDTO {
     private final long parkingRateId;
 
     @JsonPOJOBuilder(withPrefix = "")
-    static class ParkingStartRequestDTOBuilder {
+    public static class ParkingStartDTOBuilder {
     }
 }

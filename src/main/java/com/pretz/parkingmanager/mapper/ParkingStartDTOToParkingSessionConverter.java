@@ -20,7 +20,8 @@ public class ParkingStartDTOToParkingSessionConverter
             destination.setParkingRate(ParkingRate.REGULAR);
         } else if (source.getParkingRateId() == 2) {
             destination.setParkingRate(ParkingRate.DISABLED);
-        }
+        } else
+            destination.setParkingRate(ParkingRate.NONE);
 
         return destination;
     }
