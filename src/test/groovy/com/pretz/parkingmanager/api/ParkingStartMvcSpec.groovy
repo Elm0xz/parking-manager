@@ -1,4 +1,4 @@
-package com.pretz.parkingmanager.rest
+package com.pretz.parkingmanager.api
 
 import com.pretz.parkingmanager.IntegrationTest
 import org.junit.experimental.categories.Category

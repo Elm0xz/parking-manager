@@ -56,13 +56,14 @@ class ParkingMeterServiceSpec extends Specification {
                 .startTime(Timestamp.from(Instant.now()))
                 .build()
 
-        parkingSessionRepository.save(_ as ParkingSession) >> testParkingSession
+        //parkingSessionRepository.save(_ as ParkingSession) >> testParkingSession
         parkingSessionRepository.findByVehicleIdAndStopTimeIsNull(_ as String) >> Optional.empty()
 
         when:
         ParkingMeterResponseDTO parkingMeterResponseDTO = parkingMeterService.startParkingMeter(testParkingStartDTO)
 
         then:
+        1 * parkingSessionRepository.save(_ as ParkingSession) >> testParkingSession
         parkingMeterResponseDTO.vehicleId == testVehicleId
         Assert.assertNotNull(parkingMeterResponseDTO.parkingSessionId)
         Assert.assertNotNull(parkingMeterResponseDTO.timestamp)
