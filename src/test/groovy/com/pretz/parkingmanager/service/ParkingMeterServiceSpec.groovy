@@ -56,7 +56,6 @@ class ParkingMeterServiceSpec extends Specification {
                 .startTime(Timestamp.from(Instant.now()))
                 .build()
 
-        //parkingSessionRepository.save(_ as ParkingSession) >> testParkingSession
         parkingSessionRepository.findByVehicleIdAndStopTimeIsNull(_ as String) >> Optional.empty()
 
         when:
