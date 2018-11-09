@@ -140,7 +140,7 @@
                 <version>2.22.1</version>
                 <configuration>
                     <useSystemClassLoader>false</useSystemClassLoader>
-                    <groups>com.pretz.parkingmanager.UnitTest</groups>
+                    <groups>com.pretz.parkingmanager.UnitTest, com.pretz.parkingmanager.IntegrationTest</groups>
                     <includes>
                         <include>**/*Spec.java</include>
                     </includes>
