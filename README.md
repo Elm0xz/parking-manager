@@ -12,7 +12,7 @@
 ## General info
 Parking Manager is a Spring Boot app.
  
-It was written as a recruitment task and also used as opportunity to exercise working with Spring & Spock testing framework.
+It was written as a recruitment task and also used as opportunity to exercise RESTful interfaces creation, Spring, Groovy & Spock testing framework.
 
 ## Technologies
 * Spring Boot 2.0.6

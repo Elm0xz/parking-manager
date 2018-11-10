@@ -37,7 +37,6 @@ class ParkingStartDTOValidationSpec extends Specification {
 
         then:
         Assert.assertTrue(violations.isEmpty())
-
     }
 
     def "validation should pass when parking rate id has value 1 (regular rate)"() {
@@ -52,7 +51,6 @@ class ParkingStartDTOValidationSpec extends Specification {
 
         then:
         Assert.assertTrue(violations.isEmpty())
-
     }
 
     def "validation should pass when parking rate id has value 2 (disabled rate)"() {
@@ -67,7 +65,6 @@ class ParkingStartDTOValidationSpec extends Specification {
 
         then:
         Assert.assertTrue(violations.isEmpty())
-
     }
 
     def "validation should fail when vehicle id is null"() {
@@ -85,7 +82,6 @@ class ParkingStartDTOValidationSpec extends Specification {
         ConstraintViolation violation = ++violations.iterator()
         Assert.assertEquals("must not be null", violation.getMessage())
         Assert.assertEquals("vehicleId", violation.getPropertyPath().toString())
-
     }
 
     def "validation should fail when vehicle id is inconsistent with basic vehicle id regex"() {
@@ -121,7 +117,6 @@ class ParkingStartDTOValidationSpec extends Specification {
         ConstraintViolation violation = ++violations.iterator()
         Assert.assertEquals("must be greater than or equal to 1", violation.getMessage())
         Assert.assertEquals("parkingRateId", violation.getPropertyPath().toString())
-
     }
 
     def "validation should fail when parking rate id is bigger than 2"() {
@@ -139,7 +134,6 @@ class ParkingStartDTOValidationSpec extends Specification {
         ConstraintViolation violation = ++violations.iterator()
         Assert.assertEquals("must be less than or equal to 2", violation.getMessage())
         Assert.assertEquals("parkingRateId", violation.getPropertyPath().toString())
-
     }
 
 }

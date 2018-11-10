@@ -39,7 +39,7 @@ class ParkingMeterServiceSpec extends Specification {
         parkingMeterService = new ParkingMeterService(parkingSessionRepository, parkingSessionMapper)
     }
 
-    def "should start parking session for vehicle that doesn't have an active parking session"() {
+    def "should start parking session for vehicle that doesn't have active parking session"() {
 
         given:
         String testVehicleId = "AWC1342"
@@ -50,25 +50,19 @@ class ParkingMeterServiceSpec extends Specification {
                 .parkingRateId(testParkingRateId)
                 .build()
 
-        ParkingSession testParkingSession = ParkingSession.builder()
-                .vehicleId(testVehicleId)
-                .parkingRate(ParkingRate.REGULAR)
-                .startTime(Timestamp.from(Instant.now()))
-                .build()
-
         parkingSessionRepository.findByVehicleIdAndStopTimeIsNull(_ as String) >> Optional.empty()
 
         when:
         ParkingMeterResponseDTO parkingMeterResponseDTO = parkingMeterService.startParkingMeter(testParkingStartDTO)
 
         then:
-        1 * parkingSessionRepository.save(_ as ParkingSession) >> testParkingSession
+        1 * parkingSessionRepository.save(_ as ParkingSession) >> returnFakeEntity(testVehicleId)
         parkingMeterResponseDTO.vehicleId == testVehicleId
         Assert.assertNotNull(parkingMeterResponseDTO.parkingSessionId)
         Assert.assertNotNull(parkingMeterResponseDTO.timestamp)
     }
 
-    def "should not start parking session for vehicle that is already parked"() {
+    def "should not start parking session for vehicle that already has active parking session"() {
 
         given:
         String testVehicleId = "XBM5543"
@@ -91,5 +85,23 @@ class ParkingMeterServiceSpec extends Specification {
 
         then:
         thrown ParkingSessionAlreadyActiveException
+    }
+
+    def "should stop parking session for vehicle that already has active parking session"() {
+        //TODO finish this
+
+    }
+
+    def "should not stop parking session for vehicle that doesn't have active parking session" () {
+
+    }
+
+    private ParkingSession returnFakeEntity(String testVehicleId) {
+        ParkingSession testParkingSession = ParkingSession.builder()
+                .vehicleId(testVehicleId)
+                .parkingRate(ParkingRate.REGULAR)
+                .startTime(Timestamp.from(Instant.now()))
+                .build()
+        testParkingSession
     }
 }

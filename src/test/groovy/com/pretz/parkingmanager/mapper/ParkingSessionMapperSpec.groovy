@@ -12,6 +12,7 @@ import spock.lang.Unroll
 
 import java.sql.Timestamp
 import java.time.Instant
+import java.time.temporal.ChronoUnit
 
 import static net.java.quickcheck.generator.CombinedGeneratorsIterables.somePairs
 import static net.java.quickcheck.generator.PrimitiveGenerators.longs
@@ -108,8 +109,10 @@ class ParkingSessionMapperSpec extends Specification {
     def "mapper should map ParkingSession to ParkingMeterResponseDTO with timestamp calculated from start time if stop time is null"() {
 
         given:
+        Timestamp startTimestamp = Timestamp.from(Instant.now())
+
         ParkingSession testParkingSession = parkingSessionBuilder
-                .startTime(Timestamp.from(Instant.now()))
+                .startTime(startTimestamp)
                 .stopTime(null)
                 .build()
 
@@ -119,6 +122,26 @@ class ParkingSessionMapperSpec extends Specification {
         then:
         testParkingMeterResponseDTO.vehicleId == testParkingSession.vehicleId
         testParkingMeterResponseDTO.parkingSessionId == testParkingSession.id
-        testParkingMeterResponseDTO.timestamp != null
+        testParkingMeterResponseDTO.timestamp == startTimestamp
+    }
+
+    def "mapper should map ParkingSession to ParkingMeterResponseDTO with timestamp calculated from stop time if stop time is not null"() {
+
+        given:
+        Timestamp startTimestamp = Timestamp.from(Instant.now().minus(5, ChronoUnit.HOURS))
+        Timestamp stopTimestamp = Timestamp.from(Instant.now().minus(1, ChronoUnit.HOURS))
+
+        ParkingSession testParkingSession = parkingSessionBuilder
+                .startTime(startTimestamp)
+                .stopTime(stopTimestamp)
+                .build()
+
+        when:
+        ParkingMeterResponseDTO testParkingMeterResponseDTO = parkingSessionMapper.fromParkingSession(testParkingSession)
+
+        then:
+        testParkingMeterResponseDTO.vehicleId == testParkingSession.vehicleId
+        testParkingMeterResponseDTO.parkingSessionId == testParkingSession.id
+        testParkingMeterResponseDTO.timestamp == stopTimestamp
     }
 }

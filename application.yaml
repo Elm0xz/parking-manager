@@ -6,7 +6,6 @@ parking-manager:
     contact-address: przemyslaw.etz@gmail.com
     contact-url: --
     path: swagger-parking-manager-api
-
 spring:
   profiles:
     active: dev
