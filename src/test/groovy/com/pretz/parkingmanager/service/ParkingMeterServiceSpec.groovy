@@ -5,7 +5,9 @@ import com.pretz.parkingmanager.domain.ParkingRate
 import com.pretz.parkingmanager.domain.ParkingSession
 import com.pretz.parkingmanager.dto.ParkingMeterResponseDTO
 import com.pretz.parkingmanager.dto.ParkingStartDTO
+import com.pretz.parkingmanager.dto.ParkingStopDTO
 import com.pretz.parkingmanager.exception.ParkingSessionAlreadyActiveException
+import com.pretz.parkingmanager.exception.ParkingSessionNotActiveException
 import com.pretz.parkingmanager.mapper.ParkingSessionMapper
 import com.pretz.parkingmanager.mapper.ParkingSessionToParkingMeterResponseDTOConverter
 import com.pretz.parkingmanager.mapper.ParkingStartDTOToParkingSessionConverter
@@ -57,6 +59,7 @@ class ParkingMeterServiceSpec extends Specification {
 
         then:
         1 * parkingSessionRepository.save(_ as ParkingSession) >> returnFakeEntity(testVehicleId)
+
         parkingMeterResponseDTO.vehicleId == testVehicleId
         Assert.assertNotNull(parkingMeterResponseDTO.parkingSessionId)
         Assert.assertNotNull(parkingMeterResponseDTO.timestamp)
@@ -88,12 +91,53 @@ class ParkingMeterServiceSpec extends Specification {
     }
 
     def "should stop parking session for vehicle that already has active parking session"() {
-        //TODO finish this
+        given:
+        String testVehicleId = "BRE3548"
+        long testParkingSessionId = 35
+
+        ParkingStopDTO testParkingStopDTO = ParkingStopDTO.builder()
+                .vehicleId(testVehicleId)
+                .parkingSessionId(testParkingSessionId)
+                .build()
+
+        parkingSessionRepository.findByVehicleIdAndStopTimeIsNull(_) >> Optional.of(ParkingSession.builder()
+                .vehicleId(testVehicleId)
+                .startTime(Timestamp.from(Instant.now().minus(3, ChronoUnit.HOURS)))
+                .stopTime(null)
+                .id(1)
+                .parkingRate(ParkingRate.REGULAR)
+                .build())
+
+        when:
+        ParkingMeterResponseDTO parkingMeterResponseDTO = parkingMeterService.stopParkingMeter(testParkingStopDTO)
+
+        then:
+        1 * parkingSessionRepository.save(_ as ParkingSession) >> returnFakeEntity(testVehicleId)
+
+        parkingMeterResponseDTO.vehicleId == testVehicleId
+        Assert.assertNotNull(parkingMeterResponseDTO.parkingSessionId)
+        Assert.assertNotNull(parkingMeterResponseDTO.timestamp)
+
 
     }
 
     def "should not stop parking session for vehicle that doesn't have active parking session" () {
+        given:
+        String testVehicleId = "XCD3548"
+        long testParkingSessionId = 22
 
+        ParkingStopDTO testParkingStopDTO = ParkingStopDTO.builder()
+                .vehicleId(testVehicleId)
+                .parkingSessionId(testParkingSessionId)
+                .build()
+
+        parkingSessionRepository.findByVehicleIdAndStopTimeIsNull(_ as String) >> Optional.empty()
+
+        when:
+        ParkingMeterResponseDTO parkingMeterResponseDTO = parkingMeterService.stopParkingMeter(testParkingStopDTO)
+
+        then:
+        thrown ParkingSessionNotActiveException
     }
 
     private ParkingSession returnFakeEntity(String testVehicleId) {
@@ -102,6 +146,6 @@ class ParkingMeterServiceSpec extends Specification {
                 .parkingRate(ParkingRate.REGULAR)
                 .startTime(Timestamp.from(Instant.now()))
                 .build()
-        testParkingSession
+        return testParkingSession
     }
 }
