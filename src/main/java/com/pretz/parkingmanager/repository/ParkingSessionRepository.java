@@ -8,4 +8,6 @@ import java.util.Optional;
 public interface ParkingSessionRepository extends JpaRepository<ParkingSession, Long> {
 
     Optional<ParkingSession> findByVehicleIdAndStopTimeIsNull(String vehicleId);
+
+    Optional<ParkingSession> findByVehicleIdAndId(String vehicleId, long id);
 }

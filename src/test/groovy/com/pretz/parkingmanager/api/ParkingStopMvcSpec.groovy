@@ -68,7 +68,7 @@ class ParkingStopMvcSpec extends Specification {
         result.andExpect(jsonPath('$.parkingSessionId').isNotEmpty())
         result.andExpect(jsonPath('$.parkingSessionId').isNumber())
         result.andExpect(jsonPath('$.timestamp').isNotEmpty())
-        //expect header to have location set sumthin sumthin
+        //TODO expect header to have location set sumthin sumthin
     }
 
     def "Should detect that parking has already stopped for provided vehicle id and return code 409 (conflict)"() {
@@ -103,7 +103,7 @@ class ParkingStopMvcSpec extends Specification {
         result.andExpect(status().isConflict())
     }
 
-    def "Should detect that vehicle id passed in stop request is has invalid format and return code 400"() {
+    def "Should detect that vehicle id passed in stop request has invalid format and return code 400"() {
 
         given:
 

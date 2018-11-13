@@ -15,7 +15,7 @@ import javax.validation.Valid;
 import java.net.URI;
 
 @RestController
-@RequestMapping("/driver/")
+@RequestMapping("/parking-meter/")
 @RequiredArgsConstructor
 public class ParkingMeterController {
 
@@ -36,7 +36,8 @@ public class ParkingMeterController {
 
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON_UTF8);
-        headers.setLocation(URI.create("/driver/get-dues/" + parkingStopDTO.getParkingSessionId()));
+        headers.setLocation(URI.create("/dues/check-dues/" + parkingStopDTO.getParkingSessionId()));
+        //TODO change this url
 
         return new ResponseEntity<>(stopParkingMeterStatus, headers, HttpStatus.SEE_OTHER);
     }

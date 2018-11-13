@@ -1,28 +1,28 @@
 package com.pretz.parkingmanager.dto;
 
-import lombok.Builder;
 import lombok.Getter;
+import lombok.RequiredArgsConstructor;
+import lombok.Setter;
 
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
-import java.sql.Timestamp;
 
 import static com.pretz.parkingmanager.dto.ValidationPatterns.BASIC_VEH_ID_REGEX;
+import static com.pretz.parkingmanager.dto.ValidationPatterns.CURRENCY_REGEX;
 
-@Builder
-public final class ParkingMeterResponseDTO {
+@Getter
+@Setter
+@RequiredArgsConstructor
+public final class DuesRequestDTO {
 
     @NotNull
     @Pattern(regexp = BASIC_VEH_ID_REGEX)
-    @Getter
     private final String vehicleId;
 
     @NotNull
-    @Getter
     private final long parkingSessionId;
 
     @NotNull
-    @Getter
-    private final Timestamp timestamp;
-
+    @Pattern(regexp = CURRENCY_REGEX)
+    private final String currencyCode;
 }
