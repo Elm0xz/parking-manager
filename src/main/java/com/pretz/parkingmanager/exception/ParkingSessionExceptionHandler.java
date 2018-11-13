@@ -13,4 +13,9 @@ public class ParkingSessionExceptionHandler extends ResponseEntityExceptionHandl
     @ExceptionHandler(value = ParkingSessionAlreadyActiveException.class)
     protected void handleParkingSessionAlreadyActive(ParkingSessionAlreadyActiveException ex) {
     }
+
+    @ResponseStatus(code = HttpStatus.CONFLICT, reason = "No vehicle with such id on parking")
+    @ExceptionHandler(value = ParkingSessionNotActiveException.class)
+    protected void handleParkingSessionNotActive(ParkingSessionNotActiveException ex) {
+    }
 }

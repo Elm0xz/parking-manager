@@ -5,6 +5,8 @@ import com.pretz.parkingmanager.dto.ParkingMeterResponseDTO;
 import org.modelmapper.Converter;
 import org.modelmapper.spi.MappingContext;
 
+import java.sql.Timestamp;
+
 public class ParkingSessionToParkingMeterResponseDTOConverter
         implements Converter<ParkingSession, ParkingMeterResponseDTO> {
 
@@ -13,10 +15,12 @@ public class ParkingSessionToParkingMeterResponseDTOConverter
 
         ParkingSession source = mappingContext.getSource();
 
+        Timestamp mappedTimestamp = (source.getStopTime() == null) ? source.getStartTime() : source.getStopTime();
+
         return ParkingMeterResponseDTO.builder()
                 .vehicleId(source.getVehicleId())
                 .parkingSessionId(source.getId())
-                .timestamp(source.getStartTime())
+                .timestamp(mappedTimestamp)
                 .build();
     }
 }

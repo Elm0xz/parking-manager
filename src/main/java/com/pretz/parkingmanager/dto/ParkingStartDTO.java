@@ -13,7 +13,7 @@ import javax.validation.constraints.Pattern;
 @Getter
 @Builder(builderClassName = "ParkingStartDTOBuilder")
 @JsonDeserialize(builder = ParkingStartDTO.ParkingStartDTOBuilder.class)
-public class ParkingStartDTO {
+public final class ParkingStartDTO {
 
     private static final long PARKING_RATES_NR = 2;
     private static final String BASIC_VEH_ID_REGEX = "[A-Z]{3}[0-9]{4}";

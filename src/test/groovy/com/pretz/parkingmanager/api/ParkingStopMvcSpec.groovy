@@ -87,7 +87,7 @@ class ParkingStopMvcSpec extends Specification {
         result.andExpect(status().isConflict())
     }
 
-    def "Should detect that there is no vehicle to have parking stopped under provided vehicle id and return code 400"() {
+    def "Should detect that there is no vehicle to have parking stopped under provided vehicle id and return code 409 (conflict)"() {
         given:
         initEmptyTestData()
 

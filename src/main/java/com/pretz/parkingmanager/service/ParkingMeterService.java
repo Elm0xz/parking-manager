@@ -3,7 +3,9 @@ package com.pretz.parkingmanager.service;
 import com.pretz.parkingmanager.domain.ParkingSession;
 import com.pretz.parkingmanager.dto.ParkingMeterResponseDTO;
 import com.pretz.parkingmanager.dto.ParkingStartDTO;
+import com.pretz.parkingmanager.dto.ParkingStopDTO;
 import com.pretz.parkingmanager.exception.ParkingSessionAlreadyActiveException;
+import com.pretz.parkingmanager.exception.ParkingSessionNotActiveException;
 import com.pretz.parkingmanager.mapper.ParkingSessionMapper;
 import com.pretz.parkingmanager.repository.ParkingSessionRepository;
 import lombok.RequiredArgsConstructor;
@@ -32,6 +34,21 @@ public class ParkingMeterService {
             parkingSession = parkingSessionRepository.save(parkingSession);
 
             return parkingSessionMapper.fromParkingSession(parkingSession);
+        }
+    }
+
+    public ParkingMeterResponseDTO stopParkingMeter(final ParkingStopDTO parkingStopDTO) {
+
+        String vehicleId = parkingStopDTO.getVehicleId();
+
+        if (isParkingSessionAlreadyActive(vehicleId)) {
+            ParkingSession parkingSessionToBeStopped = parkingSessionRepository.findByVehicleIdAndStopTimeIsNull(vehicleId).get();
+            parkingSessionToBeStopped.setStopTime(Timestamp.from(Instant.now()));
+            parkingSessionToBeStopped = parkingSessionRepository.save(parkingSessionToBeStopped);
+
+            return parkingSessionMapper.fromParkingSession(parkingSessionToBeStopped);
+        } else {
+            throw new ParkingSessionNotActiveException();
         }
     }
 
