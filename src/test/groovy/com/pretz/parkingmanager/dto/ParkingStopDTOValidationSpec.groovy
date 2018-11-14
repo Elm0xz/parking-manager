@@ -17,7 +17,7 @@ class ParkingStopDTOValidationSpec extends Specification {
 
         ValidatorFactory validatorFactory = Validation.buildDefaultValidatorFactory()
         validator = validatorFactory.getValidator()
-        testBuilder = ParkingStartDTO.builder()
+        testBuilder = ParkingStopDTO.builder()
                 .vehicleId("SDE9999")
                 .parkingSessionId(56)
     }
@@ -29,7 +29,7 @@ class ParkingStopDTOValidationSpec extends Specification {
                 .build()
 
         when:
-        Set<ConstraintViolation<ParkingStartDTO>> violations = validator.validate(testParkingStopDTO)
+        Set<ConstraintViolation<ParkingStopDTO>> violations = validator.validate(testParkingStopDTO)
 
         then:
         Assert.assertTrue(violations.isEmpty())
@@ -42,7 +42,7 @@ class ParkingStopDTOValidationSpec extends Specification {
                 .build()
 
         when:
-        Set<ConstraintViolation<ParkingStartDTO>> violations = validator.validate(testParkingStopDTO)
+        Set<ConstraintViolation<ParkingStopDTO>> violations = validator.validate(testParkingStopDTO)
 
         then:
         Assert.assertEquals(1, violations.size())
@@ -58,7 +58,7 @@ class ParkingStopDTOValidationSpec extends Specification {
                 .build()
 
         when:
-        Set<ConstraintViolation<ParkingStartDTO>> violations = validator.validate(testParkingStopDTO)
+        Set<ConstraintViolation<ParkingStopDTO>> violations = validator.validate(testParkingStopDTO)
 
         then:
         Assert.assertEquals(1, violations.size())
@@ -68,14 +68,14 @@ class ParkingStopDTOValidationSpec extends Specification {
 
     }
 
-    def "validation should fail when parking session id is null"() {
+    def "validation should fail when parking session id is 0"() {
         given:
         ParkingStopDTO testParkingStopDTO = testBuilder
-                .parkingSessionId(null)
+                .parkingSessionId(0)
                 .build()
 
         when:
-        Set<ConstraintViolation<ParkingStartDTO>> violations = validator.validate(testParkingStopDTO)
+        Set<ConstraintViolation<ParkingStopDTO>> violations = validator.validate(testParkingStopDTO)
 
         then:
         Assert.assertEquals(1, violations.size())

@@ -4,6 +4,7 @@ import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 
+import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 
@@ -19,7 +20,7 @@ public final class DuesRequestDTO {
     @Pattern(regexp = BASIC_VEH_ID_REGEX)
     private final String vehicleId;
 
-    @NotNull
+    @Min(value = 1)
     private final long parkingSessionId;
 
     @NotNull

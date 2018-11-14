@@ -5,6 +5,7 @@ import com.fasterxml.jackson.databind.annotation.JsonPOJOBuilder;
 import lombok.Builder;
 import lombok.Getter;
 
+import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 
@@ -19,7 +20,7 @@ public final class ParkingStopDTO {
     @Pattern(regexp = BASIC_VEH_ID_REGEX)
     private final String vehicleId;
 
-    @NotNull
+    @Min(value = 1)
     private final long parkingSessionId;
 
     @JsonPOJOBuilder(withPrefix = "")

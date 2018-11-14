@@ -22,7 +22,6 @@ public final class ParkingStartDTO {
     @Pattern(regexp = BASIC_VEH_ID_REGEX)
     private final String vehicleId;
 
-    @NotNull
     @Min(value = 1)
     @Max(value = PARKING_RATES_NR)
     private final long parkingRateId;
