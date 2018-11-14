@@ -11,29 +11,30 @@ import javax.validation.Validator
 import javax.validation.ValidatorFactory
 
 @Category(UnitTest.class)
-class ParkingStopDTOValidationSpec extends Specification {
+class DuesRequestDTOValidationSpec extends Specification {
 
     Validator validator
-    ParkingStopDTO.ParkingStopDTOBuilder testBuilder
+    DuesRequestDTO.DuesRequestDTOBuilder testBuilder
 
     def setup() {
 
         ValidatorFactory validatorFactory = Validation.buildDefaultValidatorFactory()
         validator = validatorFactory.getValidator()
-        testBuilder = ParkingStopDTO.builder()
-                .vehicleId("SDE9999")
-                .parkingSessionId(56)
+        testBuilder = DuesRequestDTO.builder()
+                .vehicleId("ABC1234")
+                .parkingSessionId(15)
+                .currencyCode("PLN")
     }
 
     def "validation should pass when vehicle id is consistent with basic vehicle id regex"() {
 
         given:
-        ParkingStopDTO testParkingStopDTO = testBuilder
-                .vehicleId("WQE7654")
+        DuesRequestDTO testDuesRequestDTO = testBuilder
+                .vehicleId("ABC1234")
                 .build()
 
         when:
-        Set<ConstraintViolation<ParkingStopDTO>> violations = validator.validate(testParkingStopDTO)
+        Set<ConstraintViolation<DuesRequestDTO>> violations = validator.validate(testDuesRequestDTO)
 
         then:
         Assert.assertTrue(violations.isEmpty())
@@ -42,12 +43,12 @@ class ParkingStopDTOValidationSpec extends Specification {
     def "validation should fail when vehicle id is null"() {
 
         given:
-        ParkingStopDTO testParkingStopDTO = testBuilder
+        DuesRequestDTO testDuesRequestDTO = testBuilder
                 .vehicleId(null)
                 .build()
 
         when:
-        Set<ConstraintViolation<ParkingStopDTO>> violations = validator.validate(testParkingStopDTO)
+        Set<ConstraintViolation<DuesRequestDTO>> violations = validator.validate(testDuesRequestDTO)
 
         then:
         Assert.assertEquals(1, violations.size())
@@ -59,12 +60,12 @@ class ParkingStopDTOValidationSpec extends Specification {
     def "validation should fail when vehicle id is inconsistent with basic vehicle id regex"() {
 
         given:
-        ParkingStopDTO testParkingStopDTO = testBuilder
-                .vehicleId("BGRWRF33cgr")
+        DuesRequestDTO testDuesRequestDTO = testBuilder
+                .vehicleId("XR%_#@GE")
                 .build()
 
         when:
-        Set<ConstraintViolation<ParkingStopDTO>> violations = validator.validate(testParkingStopDTO)
+        Set<ConstraintViolation<DuesRequestDTO>> violations = validator.validate(testDuesRequestDTO)
 
         then:
         Assert.assertEquals(1, violations.size())
@@ -77,18 +78,35 @@ class ParkingStopDTOValidationSpec extends Specification {
     def "validation should fail when parking session id is 0"() {
 
         given:
-        ParkingStopDTO testParkingStopDTO = testBuilder
+        DuesRequestDTO testDuesRequestDTO = testBuilder
                 .parkingSessionId(0)
                 .build()
 
         when:
-        Set<ConstraintViolation<ParkingStopDTO>> violations = validator.validate(testParkingStopDTO)
+        Set<ConstraintViolation<DuesRequestDTO>> violations = validator.validate(testDuesRequestDTO)
 
         then:
         Assert.assertEquals(1, violations.size())
         ConstraintViolation violation = ++violations.iterator()
-        Assert.assertEquals("must not be null", violation.getMessage())
+        Assert.assertEquals("must be greater than or equal to 1", violation.getMessage())
         Assert.assertEquals("parkingSessionId", violation.getPropertyPath().toString())
     }
-}
 
+    def "validation should fail when currency code is inconsistent with currency regex"() {
+
+        given:
+        DuesRequestDTO testDuesRequestDTO = testBuilder
+                .currencyCode("X")
+                .build()
+
+        when:
+        Set<ConstraintViolation<DuesRequestDTO>> violations = validator.validate(testDuesRequestDTO)
+
+        then:
+        Assert.assertEquals(1, violations.size())
+        ConstraintViolation violation = ++violations.iterator()
+        Assert.assertEquals("must match \"[A-Z]{3}\"", violation.getMessage())
+        Assert.assertEquals("currencyCode", violation.getPropertyPath().toString())
+
+    }
+}

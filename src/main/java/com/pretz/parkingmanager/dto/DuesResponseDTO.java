@@ -7,7 +7,6 @@ import lombok.RequiredArgsConstructor;
 import java.math.BigDecimal;
 import java.sql.Timestamp;
 
-@RequiredArgsConstructor
 @Builder
 public final class DuesResponseDTO {
 

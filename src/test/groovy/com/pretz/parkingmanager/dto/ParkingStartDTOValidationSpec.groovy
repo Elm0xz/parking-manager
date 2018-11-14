@@ -135,5 +135,4 @@ class ParkingStartDTOValidationSpec extends Specification {
         Assert.assertEquals("must be less than or equal to 2", violation.getMessage())
         Assert.assertEquals("parkingRateId", violation.getPropertyPath().toString())
     }
-
 }

@@ -1,8 +1,8 @@
 package com.pretz.parkingmanager.dto;
 
+import lombok.Builder;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
-import lombok.Setter;
 
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
@@ -12,7 +12,7 @@ import static com.pretz.parkingmanager.dto.ValidationPatterns.BASIC_VEH_ID_REGEX
 import static com.pretz.parkingmanager.dto.ValidationPatterns.CURRENCY_REGEX;
 
 @Getter
-@Setter
+@Builder
 @RequiredArgsConstructor
 public final class DuesRequestDTO {
 
