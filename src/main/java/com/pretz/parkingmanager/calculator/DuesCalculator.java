@@ -1,5 +1,6 @@
-package com.pretz.parkingmanager.service;
+package com.pretz.parkingmanager.calculator;
 
+import com.pretz.parkingmanager.calculator.currency.CurrencyConverter;
 import com.pretz.parkingmanager.domain.ParkingRate;
 import com.pretz.parkingmanager.domain.ParkingSession;
 import org.springframework.stereotype.Component;
@@ -52,6 +53,7 @@ public class DuesCalculator {
     private BigDecimal calculateDuesForParkingLongerThanTwoHours(ParkingRate parkingRate, double parkingHours) {
 
         BigDecimal dues = calculateDuesForTwoHoursParking(parkingRate);
+
         BigDecimal nextHourFee = parkingRate.getSecondHourFee();
         for (int hour = 2; hour < parkingHours; hour++) {
             nextHourFee = nextHourFee.multiply(parkingRate.getFurtherHoursMultiplier());

@@ -1,6 +1,8 @@
 package com.pretz.parkingmanager.service
 
 import com.pretz.parkingmanager.UnitTest
+import com.pretz.parkingmanager.calculator.currency.CurrencyConverter
+import com.pretz.parkingmanager.calculator.DuesCalculator
 import com.pretz.parkingmanager.domain.ParkingRate
 import com.pretz.parkingmanager.domain.ParkingSession
 import org.junit.experimental.categories.Category

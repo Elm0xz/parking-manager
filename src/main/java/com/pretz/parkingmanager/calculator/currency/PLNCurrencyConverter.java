@@ -1,4 +1,4 @@
-package com.pretz.parkingmanager.service;
+package com.pretz.parkingmanager.calculator.currency;
 
 import org.springframework.stereotype.Component;
 
