@@ -1,4 +1,4 @@
-package com.pretz.parkingmanager.service
+package com.pretz.parkingmanager.calculator
 
 import com.pretz.parkingmanager.UnitTest
 import com.pretz.parkingmanager.calculator.currency.CurrencyConverter
