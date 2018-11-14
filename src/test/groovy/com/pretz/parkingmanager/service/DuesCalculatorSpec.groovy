@@ -14,12 +14,15 @@ import java.time.temporal.ChronoUnit
 class DuesCalculatorSpec extends Specification {
 
     private DuesCalculator duesCalculator
-    private Currency testCurrency
+    private CurrencyConverter currencyConverter
+
     private ParkingSession.ParkingSessionBuilder testBuilder
 
     def setup() {
+        currencyConverter = Stub(CurrencyConverter)
+        currencyConverter.getCurrencyMultiplier() >> BigDecimal.ONE
+
         duesCalculator = new DuesCalculator()
-        testCurrency = Currency.getInstance("PLN")
 
         testBuilder = ParkingSession.builder()
     }
@@ -35,7 +38,7 @@ class DuesCalculatorSpec extends Specification {
                 .build()
 
         when:
-        BigDecimal testDues = duesCalculator.calculateDues(testParkingSession, testCurrency)
+        BigDecimal testDues = duesCalculator.calculateDues(testParkingSession, currencyConverter)
 
         then:
         testDues == BigDecimal.valueOf(1.00)
@@ -53,7 +56,7 @@ class DuesCalculatorSpec extends Specification {
                 .build()
 
         when:
-        BigDecimal testDues = duesCalculator.calculateDues(testParkingSession, testCurrency)
+        BigDecimal testDues = duesCalculator.calculateDues(testParkingSession, currencyConverter)
 
         then:
         testDues == BigDecimal.valueOf(3.00)
@@ -71,7 +74,7 @@ class DuesCalculatorSpec extends Specification {
                 .build()
 
         when:
-        BigDecimal testDues = duesCalculator.calculateDues(testParkingSession, testCurrency)
+        BigDecimal testDues = duesCalculator.calculateDues(testParkingSession, currencyConverter)
 
         then:
         testDues == BigDecimal.valueOf(6.00)
@@ -89,7 +92,7 @@ class DuesCalculatorSpec extends Specification {
                 .build()
 
         when:
-        BigDecimal testDues = duesCalculator.calculateDues(testParkingSession, testCurrency)
+        BigDecimal testDues = duesCalculator.calculateDues(testParkingSession, currencyConverter)
 
         then:
         testDues == BigDecimal.valueOf(10.50)
@@ -107,7 +110,7 @@ class DuesCalculatorSpec extends Specification {
                 .build()
 
         when:
-        BigDecimal testDues = duesCalculator.calculateDues(testParkingSession, testCurrency)
+        BigDecimal testDues = duesCalculator.calculateDues(testParkingSession, currencyConverter)
 
         then:
         testDues == BigDecimal.valueOf(44887.97)
@@ -124,7 +127,7 @@ class DuesCalculatorSpec extends Specification {
                 .build()
 
         when:
-        BigDecimal testDues = duesCalculator.calculateDues(testParkingSession, testCurrency)
+        BigDecimal testDues = duesCalculator.calculateDues(testParkingSession, currencyConverter)
 
         then:
         testDues == BigDecimal.ZERO
@@ -142,7 +145,7 @@ class DuesCalculatorSpec extends Specification {
                 .build()
 
         when:
-        BigDecimal testDues = duesCalculator.calculateDues(testParkingSession, testCurrency)
+        BigDecimal testDues = duesCalculator.calculateDues(testParkingSession, currencyConverter)
 
         then:
         testDues == BigDecimal.valueOf(2.00)
@@ -160,7 +163,7 @@ class DuesCalculatorSpec extends Specification {
                 .build()
 
         when:
-        BigDecimal testDues = duesCalculator.calculateDues(testParkingSession, testCurrency)
+        BigDecimal testDues = duesCalculator.calculateDues(testParkingSession, currencyConverter)
 
         then:
         testDues == BigDecimal.valueOf(4.40)
@@ -179,7 +182,7 @@ class DuesCalculatorSpec extends Specification {
                 .build()
 
         when:
-        BigDecimal testDues = duesCalculator.calculateDues(testParkingSession, testCurrency)
+        BigDecimal testDues = duesCalculator.calculateDues(testParkingSession, currencyConverter)
 
         then:
         testDues == BigDecimal.valueOf(7.28)
@@ -198,7 +201,7 @@ class DuesCalculatorSpec extends Specification {
                 .build()
 
         when:
-        BigDecimal testDues = duesCalculator.calculateDues(testParkingSession, testCurrency)
+        BigDecimal testDues = duesCalculator.calculateDues(testParkingSession, currencyConverter)
 
         then:
         testDues == BigDecimal.valueOf(652.47)
@@ -216,7 +219,7 @@ class DuesCalculatorSpec extends Specification {
                 .build()
 
         when:
-        BigDecimal testDues = duesCalculator.calculateDues(testParkingSession, testCurrency)
+        BigDecimal testDues = duesCalculator.calculateDues(testParkingSession, currencyConverter)
 
         then:
         testDues == BigDecimal.ZERO

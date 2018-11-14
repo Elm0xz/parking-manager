@@ -5,7 +5,6 @@ import lombok.Getter;
 
 import java.math.BigDecimal;
 
-//TODO maybe create strategies for these two rates when implementing due calculation logic
 @AllArgsConstructor
 @Getter
 public enum ParkingRate {
@@ -13,7 +12,7 @@ public enum ParkingRate {
     REGULAR(BigDecimal.valueOf(1.0),BigDecimal.valueOf(2.0), BigDecimal.valueOf(1.5)),
     DISABLED(BigDecimal.valueOf(0.0),BigDecimal.valueOf(2.0), BigDecimal.valueOf(1.2));
 
-    private BigDecimal firstHourFee;
-    private BigDecimal secondHourFee;
-    private BigDecimal furtherHoursMultiplier;
+    private final BigDecimal firstHourFee;
+    private final BigDecimal secondHourFee;
+    private final BigDecimal furtherHoursMultiplier;
 }

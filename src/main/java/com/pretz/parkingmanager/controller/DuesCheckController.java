@@ -21,7 +21,6 @@ public class DuesCheckController {
     @GetMapping("check-dues")
     public ResponseEntity<DuesResponseDTO> checkDues(@Valid DuesRequestDTO duesRequestDTO) {
 
-        //TODO 500 here for some reason
         return ResponseEntity.ok(duesCheckService.checkDues(duesRequestDTO));
     }
 }

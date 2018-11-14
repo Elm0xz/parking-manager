@@ -18,4 +18,9 @@ public class ParkingSessionExceptionHandler extends ResponseEntityExceptionHandl
     @ExceptionHandler(value = ParkingSessionNotActiveException.class)
     protected void handleParkingSessionNotActive(ParkingSessionNotActiveException ex) {
     }
+
+    @ResponseStatus(code = HttpStatus.BAD_REQUEST, reason = "Unknown currency code")
+    @ExceptionHandler(value = UnknownCurrencyException.class)
+    protected void handleParkingSessionNotActive(UnknownCurrencyException ex) {
+    }
 }
