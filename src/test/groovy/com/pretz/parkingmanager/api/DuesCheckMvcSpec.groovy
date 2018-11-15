@@ -15,13 +15,12 @@ import java.sql.Timestamp
 import java.time.Instant
 import java.time.temporal.ChronoUnit
 
-import static groovy.json.JsonOutput.toJson
-import static org.springframework.http.MediaType.APPLICATION_JSON
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status
 
+
+//TODO there is an issue with database ids, have a look at it later...
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.MOCK)
 @AutoConfigureMockMvc
 @Category(IntegrationTest.class)
@@ -34,7 +33,7 @@ class DuesCheckMvcSpec extends Specification {
     ParkingSessionRepository parkingSessionRepository
 
     private String testVehicleId = "BGT4025"
-    private String testParkingSessionId = "1"
+    private String testParkingSessionId
     private String testCurrencyCode = "PLN"
     private Timestamp startTimestamp = Timestamp.from(Instant.now()
             .minus(2, ChronoUnit.HOURS)
@@ -43,14 +42,14 @@ class DuesCheckMvcSpec extends Specification {
 
     def setup() {
 
-        ParkingSession testParkingSessionEntity = ParkingSession.builder()
+        ParkingSession testParkingSession = ParkingSession.builder()
                 .vehicleId(testVehicleId)
-                .id(Long.valueOf(testParkingSessionId))
                 .parkingRate(ParkingRate.REGULAR)
                 .startTime(startTimestamp)
                 .build()
 
-        parkingSessionRepository.save(testParkingSessionEntity)
+        testParkingSession == parkingSessionRepository.save(testParkingSession)
+        testParkingSessionId = testParkingSession.getId()
     }
 
     def cleanup() {
@@ -87,7 +86,7 @@ class DuesCheckMvcSpec extends Specification {
 
         Map request = [
                 vehicleId       : "TRE7784",
-                parkingSessionId: "10",
+                parkingSessionId: "56",
                 currencyCode    : testCurrencyCode
         ]
 
@@ -123,17 +122,16 @@ class DuesCheckMvcSpec extends Specification {
 
     }
 
-    def "Should show dues for specified vehicle and parking session in requested currency when vehicle has just stopped parking"() {
+    def "Should show dues for specified vehicle and parking session when vehicle has just stopped parking"() {
 
         given:
+        stopParkingSession(testParkingSessionId)
 
         Map request = [
                 vehicleId       : testVehicleId,
                 parkingSessionId: testParkingSessionId,
                 currencyCode    : testCurrencyCode
         ]
-
-        stopParkingSession(request)
 
         when:
         def result = mockMvc.perform(get('/dues/check-dues/{id}', request.parkingSessionId))
@@ -175,8 +173,10 @@ class DuesCheckMvcSpec extends Specification {
         parkingSessionRepository.save(parkingSessionToBeStopped)
     }
 
-    def stopParkingSession(Map request) {
+    def stopParkingSession(String parkingSessionId) {
 
-        mockMvc.perform(post('/parking-meter/stop-parking').contentType(APPLICATION_JSON).content(toJson(request)))
+        ParkingSession parkingSessionToBeStopped = parkingSessionRepository.findById(Long.valueOf(parkingSessionId)).get()
+        parkingSessionToBeStopped.setStopTime(Timestamp.from(Instant.now()))
+        parkingSessionRepository.save(parkingSessionToBeStopped)
     }
 }
