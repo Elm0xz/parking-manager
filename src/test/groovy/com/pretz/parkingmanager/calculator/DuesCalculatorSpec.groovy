@@ -3,6 +3,7 @@ package com.pretz.parkingmanager.calculator
 import com.pretz.parkingmanager.UnitTest
 import com.pretz.parkingmanager.calculator.currency.CurrencyConverter
 import com.pretz.parkingmanager.calculator.DuesCalculator
+import com.pretz.parkingmanager.calculator.hours.DefaultParkingHoursCalculator
 import com.pretz.parkingmanager.domain.ParkingRate
 import com.pretz.parkingmanager.domain.ParkingSession
 import org.junit.experimental.categories.Category
@@ -24,7 +25,7 @@ class DuesCalculatorSpec extends Specification {
         currencyConverter = Stub(CurrencyConverter)
         currencyConverter.getCurrencyMultiplier() >> BigDecimal.ONE
 
-        duesCalculator = new DuesCalculator()
+        duesCalculator = new DuesCalculator(new DefaultParkingHoursCalculator())
 
         testBuilder = ParkingSession.builder()
     }

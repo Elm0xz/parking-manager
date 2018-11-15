@@ -1,23 +1,26 @@
 package com.pretz.parkingmanager.calculator;
 
 import com.pretz.parkingmanager.calculator.currency.CurrencyConverter;
+import com.pretz.parkingmanager.calculator.hours.ParkingHoursCalculator;
 import com.pretz.parkingmanager.domain.ParkingRate;
 import com.pretz.parkingmanager.domain.ParkingSession;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
-import java.sql.Timestamp;
-import java.time.Instant;
 
 @Component
+@RequiredArgsConstructor
 public class DuesCalculator {
+
+    private final ParkingHoursCalculator parkingHoursCalculator;
 
     public BigDecimal calculateDues(ParkingSession parkingSession, CurrencyConverter currencyConverter) {
 
         ParkingRate parkingRate = parkingSession.getParkingRate();
 
-        double parkingHours = calculateParkingHours(parkingSession);
+        double parkingHours = parkingHoursCalculator.calculateParkingHours(parkingSession);
 
         BigDecimal dues;
 
@@ -31,15 +34,6 @@ public class DuesCalculator {
 
         BigDecimal currencyMultiplier = currencyConverter.getCurrencyMultiplier();
         return dues.multiply(currencyMultiplier).setScale(2, RoundingMode.HALF_UP);
-    }
-
-    private double calculateParkingHours(ParkingSession parkingSession) {
-
-        Timestamp parkingStartTime = parkingSession.getStartTime();
-
-        Timestamp presentTime = Timestamp.from(Instant.now());
-
-        return (presentTime.getTime() - parkingStartTime.getTime()) / (1000.0 * 60.0 * 60.0);
     }
 
     private BigDecimal calculateDuesForOneHourParking(ParkingRate parkingRate) {

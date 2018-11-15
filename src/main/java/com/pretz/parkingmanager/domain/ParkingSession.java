@@ -36,5 +36,4 @@ public final class ParkingSession {
     @Column(name = "parking_rate")
     @Getter
     private ParkingRate parkingRate;
-
 }
