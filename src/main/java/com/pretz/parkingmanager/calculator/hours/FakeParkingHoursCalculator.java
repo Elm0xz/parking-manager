@@ -9,7 +9,7 @@ import java.time.Instant;
 import java.time.temporal.ChronoUnit;
 
 @Component
-@Profile("dev")
+@Profile("test")
 public class FakeParkingHoursCalculator implements ParkingHoursCalculator {
     @Override
     public double calculateParkingHours(ParkingSession parkingSession) {

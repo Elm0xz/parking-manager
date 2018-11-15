@@ -87,7 +87,6 @@ class ParkingStopDTOValidationSpec extends Specification {
         then:
         Assert.assertEquals(1, violations.size())
         ConstraintViolation violation = ++violations.iterator()
-        Assert.assertEquals("must not be null", violation.getMessage())
         Assert.assertEquals("parkingSessionId", violation.getPropertyPath().toString())
     }
 }

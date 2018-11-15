@@ -46,6 +46,7 @@ public class DuesCheckService {
         ParkingSession parkingSession = parkingSessionRepository.findByIdAndStopTimeIsNotNull(id)
                 .orElseThrow(InvalidParkingSessionException::new);
 
+        //TODO should probably pass currency tag in stop parking meter request instead
         CurrencyConverter currencyConverter = getCurrencyConverter("PLN");
 
         BigDecimal dues = duesCalculator.calculateDues(parkingSession, currencyConverter);

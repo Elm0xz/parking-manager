@@ -8,7 +8,7 @@ parking-manager:
     path: swagger-parking-manager-api
 spring:
   profiles:
-#    active: dev
+    active: dev
   h2:
     console:
       path: /h2

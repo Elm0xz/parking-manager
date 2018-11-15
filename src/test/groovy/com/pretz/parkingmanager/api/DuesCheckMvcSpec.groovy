@@ -53,6 +53,10 @@ class DuesCheckMvcSpec extends Specification {
         parkingSessionRepository.save(testParkingSessionEntity)
     }
 
+    def cleanup() {
+        parkingSessionRepository.deleteAll()
+    }
+
     def "Should show dues for specified vehicle and parking session in requested currency when vehicle is still parked"() {
 
         given:
