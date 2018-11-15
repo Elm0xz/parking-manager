@@ -9,5 +9,7 @@ public interface ParkingSessionRepository extends JpaRepository<ParkingSession, 
 
     Optional<ParkingSession> findByVehicleIdAndStopTimeIsNull(String vehicleId);
 
-    Optional<ParkingSession> findByVehicleIdAndId(String vehicleId, long id);
+    Optional<ParkingSession> findByVehicleIdAndIdAndStopTimeIsNull(String vehicleId, long id);
+
+    Optional<ParkingSession> findByIdAndStopTimeIsNotNull(long id);
 }

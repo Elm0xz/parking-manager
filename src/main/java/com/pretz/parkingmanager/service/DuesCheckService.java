@@ -1,11 +1,11 @@
 package com.pretz.parkingmanager.service;
 
-import com.pretz.parkingmanager.calculator.currency.CurrencyConverter;
 import com.pretz.parkingmanager.calculator.DuesCalculator;
+import com.pretz.parkingmanager.calculator.currency.CurrencyConverter;
 import com.pretz.parkingmanager.domain.ParkingSession;
 import com.pretz.parkingmanager.dto.DuesRequestDTO;
 import com.pretz.parkingmanager.dto.DuesResponseDTO;
-import com.pretz.parkingmanager.exception.ParkingSessionNotActiveException;
+import com.pretz.parkingmanager.exception.InvalidParkingSessionException;
 import com.pretz.parkingmanager.exception.UnknownCurrencyException;
 import com.pretz.parkingmanager.repository.ParkingSessionRepository;
 import lombok.RequiredArgsConstructor;
@@ -30,8 +30,23 @@ public class DuesCheckService {
 
         CurrencyConverter currencyConverter = getCurrencyConverter(duesRequestDTO.getCurrencyCode());
 
-        ParkingSession parkingSession = parkingSessionRepository.findByVehicleIdAndId(vehicleId, parkingSessionId)
-                .orElseThrow(ParkingSessionNotActiveException::new);
+        ParkingSession parkingSession = parkingSessionRepository.findByVehicleIdAndIdAndStopTimeIsNull(vehicleId, parkingSessionId)
+                .orElseThrow(InvalidParkingSessionException::new);
+
+        BigDecimal dues = duesCalculator.calculateDues(parkingSession, currencyConverter);
+
+        return DuesResponseDTO.builder()
+                .parkingStartTime(parkingSession.getStartTime())
+                .dues(dues)
+                .build();
+    }
+
+    public DuesResponseDTO checkDues(long id) {
+
+        ParkingSession parkingSession = parkingSessionRepository.findByIdAndStopTimeIsNotNull(id)
+                .orElseThrow(InvalidParkingSessionException::new);
+
+        CurrencyConverter currencyConverter = getCurrencyConverter("PLN");
 
         BigDecimal dues = duesCalculator.calculateDues(parkingSession, currencyConverter);
 
@@ -47,4 +62,6 @@ public class DuesCheckService {
         return Optional.ofNullable(currencyConverters.get(currencyKey)).orElseThrow(UnknownCurrencyException::new);
 
     }
+
+
 }

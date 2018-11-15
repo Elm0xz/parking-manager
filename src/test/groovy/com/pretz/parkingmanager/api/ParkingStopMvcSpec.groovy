@@ -58,7 +58,7 @@ class ParkingStopMvcSpec extends Specification {
         ]
 
         when:
-        def result = mockMvc.perform(post('/driver/stop-parking').contentType(APPLICATION_JSON).content(toJson(request)))
+        def result = mockMvc.perform(post('/parking-meter/stop-parking').contentType(APPLICATION_JSON).content(toJson(request)))
 
         then:
         result.andExpect(status().isSeeOther())
@@ -81,7 +81,7 @@ class ParkingStopMvcSpec extends Specification {
         ]
 
         when:
-        def result = mockMvc.perform(post('/driver/stop-parking').contentType(APPLICATION_JSON).content(toJson(request)))
+        def result = mockMvc.perform(post('/parking-meter/stop-parking').contentType(APPLICATION_JSON).content(toJson(request)))
 
         then:
         result.andExpect(status().isConflict())
@@ -97,7 +97,7 @@ class ParkingStopMvcSpec extends Specification {
         ]
 
         when:
-        def result = mockMvc.perform(post('/driver/stop-parking').contentType(APPLICATION_JSON).content(toJson(request)))
+        def result = mockMvc.perform(post('/parking-meter/stop-parking').contentType(APPLICATION_JSON).content(toJson(request)))
 
         then:
         result.andExpect(status().isConflict())
@@ -113,7 +113,7 @@ class ParkingStopMvcSpec extends Specification {
         ]
 
         when:
-        def stopResult = mockMvc.perform(post('/driver/stop-parking').contentType(APPLICATION_JSON).content(toJson(stopRequest)))
+        def stopResult = mockMvc.perform(post('/parking-meter/stop-parking').contentType(APPLICATION_JSON).content(toJson(stopRequest)))
 
         then:
         stopResult.andExpect(status().isBadRequest())

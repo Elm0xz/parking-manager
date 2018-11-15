@@ -28,12 +28,13 @@ Run start.sh script.
 ## Features
 Features already implemented:
 * Starting parking meter
-
-To-do list:
 * Stopping parking meter
 * Checking dues
+
+To-do list:
 * Vehicle status control
 * Checking earnings for parking manager
+* Authorization rules
 
 ## Status
 Project is: _in progress_
