@@ -4,11 +4,14 @@ import com.pretz.parkingmanager.UnitTest
 import org.junit.Assert
 import org.junit.experimental.categories.Category
 import spock.lang.Specification
+import spock.lang.Unroll
 
 import javax.validation.ConstraintViolation
 import javax.validation.Validation
 import javax.validation.Validator
 import javax.validation.ValidatorFactory
+
+import static net.java.quickcheck.generator.PrimitiveGeneratorsIterables.someLongs
 
 @Category(UnitTest.class)
 class DuesRequestDTOValidationSpec extends Specification {
@@ -72,7 +75,24 @@ class DuesRequestDTOValidationSpec extends Specification {
         ConstraintViolation violation = ++violations.iterator()
         Assert.assertEquals("must match \"[A-Z]{3}[0-9]{4}\"", violation.getMessage())
         Assert.assertEquals("vehicleId", violation.getPropertyPath().toString())
+    }
 
+    @Unroll
+    def "validation should pass when parking session id is not 0"() {
+
+        given:
+        DuesRequestDTO testDuesRequestDTO = testBuilder
+                .parkingSessionId(generatedValue)
+                .build()
+
+        when:
+        Set<ConstraintViolation<DuesRequestDTO>> violations = validator.validate(testDuesRequestDTO)
+
+        then:
+        Assert.assertEquals(0, violations.size())
+
+        where:
+        generatedValue << someLongs(1, 100000)
     }
 
     def "validation should fail when parking session id is 0"() {
@@ -90,6 +110,20 @@ class DuesRequestDTOValidationSpec extends Specification {
         ConstraintViolation violation = ++violations.iterator()
         Assert.assertEquals("must be greater than or equal to 1", violation.getMessage())
         Assert.assertEquals("parkingSessionId", violation.getPropertyPath().toString())
+    }
+
+    def "validation should pass when currency code is consistent with currency code regex"() {
+
+        given:
+        DuesRequestDTO testDuesRequestDTO = testBuilder
+                .currencyCode("USD")
+                .build()
+
+        when:
+        Set<ConstraintViolation<DuesRequestDTO>> violations = validator.validate(testDuesRequestDTO)
+
+        then:
+        Assert.assertEquals(0, violations.size())
     }
 
     def "validation should fail when currency code is inconsistent with currency regex"() {

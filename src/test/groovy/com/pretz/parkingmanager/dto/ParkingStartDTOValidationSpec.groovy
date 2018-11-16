@@ -102,6 +102,34 @@ class ParkingStartDTOValidationSpec extends Specification {
 
     }
 
+    def "validation should pass when parking rate id is 1"() {
+
+        given:
+        ParkingStartDTO testParkingStartDTO = testBuilder
+                .parkingRateId(1)
+                .build()
+
+        when:
+        Set<ConstraintViolation<ParkingStartDTO>> violations = validator.validate(testParkingStartDTO)
+
+        then:
+        Assert.assertEquals(0, violations.size())
+    }
+
+    def "validation should pass when parking rate id is 2"() {
+
+        given:
+        ParkingStartDTO testParkingStartDTO = testBuilder
+                .parkingRateId(1)
+                .build()
+
+        when:
+        Set<ConstraintViolation<ParkingStartDTO>> violations = validator.validate(testParkingStartDTO)
+
+        then:
+        Assert.assertEquals(0, violations.size())
+    }
+
     def "validation should fail when parking rate id is 0"() {
 
         given:
