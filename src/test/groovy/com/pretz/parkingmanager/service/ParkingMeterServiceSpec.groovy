@@ -100,7 +100,7 @@ class ParkingMeterServiceSpec extends Specification {
                 .parkingSessionId(testParkingSessionId)
                 .build()
 
-        parkingSessionRepository.findByVehicleIdAndStopTimeIsNull(_) >> Optional.of(ParkingSession.builder()
+        parkingSessionRepository.findByVehicleIdAndIdAndStopTimeIsNull(_, _) >> Optional.of(ParkingSession.builder()
                 .vehicleId(testVehicleId)
                 .startTime(Timestamp.from(Instant.now().minus(3, ChronoUnit.HOURS)))
                 .stopTime(null)
@@ -131,7 +131,7 @@ class ParkingMeterServiceSpec extends Specification {
                 .parkingSessionId(testParkingSessionId)
                 .build()
 
-        parkingSessionRepository.findByVehicleIdAndStopTimeIsNull(_ as String) >> Optional.empty()
+        parkingSessionRepository.findByVehicleIdAndIdAndStopTimeIsNull(_, _) >> Optional.empty()
 
         when:
         ParkingMeterResponseDTO parkingMeterResponseDTO = parkingMeterService.stopParkingMeter(testParkingStopDTO)

@@ -41,9 +41,10 @@ public class ParkingMeterService {
     public ParkingMeterResponseDTO stopParkingMeter(final ParkingStopDTO parkingStopDTO) {
 
         String vehicleId = parkingStopDTO.getVehicleId();
+        long parkingSessionId = parkingStopDTO.getParkingSessionId();
 
-        if (isParkingSessionAlreadyActive(vehicleId)) {
-            ParkingSession parkingSessionToBeStopped = parkingSessionRepository.findByVehicleIdAndStopTimeIsNull(vehicleId).get();
+        if (isParkingSessionAlreadyActive(vehicleId, parkingSessionId)) {
+            ParkingSession parkingSessionToBeStopped = parkingSessionRepository.findByVehicleIdAndIdAndStopTimeIsNull(vehicleId, parkingSessionId).get();
             parkingSessionToBeStopped.setStopTime(Timestamp.from(Instant.now()));
             parkingSessionToBeStopped.setDues(duesCalculationService.calculateDues(parkingSessionToBeStopped, parkingStopDTO.getCurrencyCode()));
             parkingSessionToBeStopped = parkingSessionRepository.save(parkingSessionToBeStopped);
@@ -56,5 +57,9 @@ public class ParkingMeterService {
 
     private boolean isParkingSessionAlreadyActive(final String vehicleId) {
         return parkingSessionRepository.findByVehicleIdAndStopTimeIsNull(vehicleId).isPresent();
+    }
+
+    private boolean isParkingSessionAlreadyActive(final String vehicleId, final long parkingSessionId) {
+        return parkingSessionRepository.findByVehicleIdAndIdAndStopTimeIsNull(vehicleId, parkingSessionId).isPresent();
     }
 }

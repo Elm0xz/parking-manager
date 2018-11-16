@@ -19,7 +19,9 @@ public class EarningsController {
     private final EarningsService earningsService;
 
     @GetMapping("check")
-    public ResponseEntity<BigDecimal> checkEarnings(@DateTimeFormat(pattern = "yyyy-MM-dd") Date date) {
+    //TODO how to solve issue with big decimal format?
+    //@JsonSerialize(using = MoneySerializer.class)
+    public ResponseEntity<BigDecimal> checkEarnings(@DateTimeFormat(iso = DateTimeFormat.ISO.DATE) Date date) {
 
         BigDecimal earnings = earningsService.checkEarnings(date);
         return ResponseEntity.ok(earnings);
