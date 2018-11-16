@@ -61,8 +61,5 @@ public class DuesCheckService {
 
         String currencyKey = currencyCode + "CurrencyConverter";
         return Optional.ofNullable(currencyConverters.get(currencyKey)).orElseThrow(UnknownCurrencyException::new);
-
     }
-
-
 }

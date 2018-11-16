@@ -10,6 +10,7 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 
 import static com.pretz.parkingmanager.dto.ValidationPatterns.BASIC_VEH_ID_REGEX;
+import static com.pretz.parkingmanager.dto.ValidationPatterns.CURRENCY_REGEX;
 
 @Getter
 @Builder(builderClassName = "ParkingStopDTOBuilder")
@@ -22,6 +23,10 @@ public final class ParkingStopDTO {
 
     @Min(value = 1)
     private final long parkingSessionId;
+
+    @NotNull
+    @Pattern(regexp = CURRENCY_REGEX)
+    private final String currencyCode;
 
     @JsonPOJOBuilder(withPrefix = "")
     public static class ParkingStopDTOBuilder {
