@@ -1,6 +1,6 @@
 package com.pretz.parkingmanager.controller;
 
-import com.pretz.parkingmanager.service.VehicleStatusCheckService;
+import com.pretz.parkingmanager.service.VehicleStatusService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -11,12 +11,12 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("/vehicle/")
 @RequiredArgsConstructor
-public class VehicleStatusCheckController {
+public class VehicleStatusController {
 
-    private final VehicleStatusCheckService vehicleStatusCheckService;
+    private final VehicleStatusService vehicleStatusService;
 
     @GetMapping("status")
     public ResponseEntity<Boolean> isParkingMeterStarted(@RequestParam String vehicleId) {
-        return ResponseEntity.ok(vehicleStatusCheckService.checkVehicleStatus(vehicleId));
+        return ResponseEntity.ok(vehicleStatusService.checkVehicleStatus(vehicleId));
     }
 }
