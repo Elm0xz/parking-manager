@@ -18,8 +18,7 @@ import java.time.temporal.ChronoUnit
 import static groovy.json.JsonOutput.toJson
 import static org.springframework.http.MediaType.APPLICATION_JSON
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.MOCK)
 @AutoConfigureMockMvc
@@ -33,7 +32,8 @@ class ParkingStopMvcSpec extends Specification {
     ParkingSessionRepository parkingSessionRepository
 
     String testVehicleId = 'ZXC4572'
-    long testParkingSessionId = 25
+    long testParkingSessionId
+    String testCurrencyCode = 'PLN'
 
     def setup() {
 
@@ -43,6 +43,7 @@ class ParkingStopMvcSpec extends Specification {
                 .startTime(Timestamp.from(Instant.now()))
                 .build()
         parkingSessionRepository.save(testParkingSessionEntity)
+        testParkingSessionId = testParkingSessionEntity.getId()
     }
 
     def cleanup() {
@@ -54,7 +55,8 @@ class ParkingStopMvcSpec extends Specification {
 
         Map request = [
                 vehicleId       : testVehicleId,
-                parkingSessionId: testParkingSessionId
+                parkingSessionId: testParkingSessionId,
+                currencyCode    : testCurrencyCode
         ]
 
         when:
@@ -68,7 +70,7 @@ class ParkingStopMvcSpec extends Specification {
         result.andExpect(jsonPath('$.parkingSessionId').isNotEmpty())
         result.andExpect(jsonPath('$.parkingSessionId').isNumber())
         result.andExpect(jsonPath('$.timestamp').isNotEmpty())
-        //TODO expect header to have location set sumthin sumthin
+        result.andExpect(redirectedUrlPattern("/dues/check-dues/" + testParkingSessionId + "?currencyCode=" + testCurrencyCode))
     }
 
     def "Should detect that parking has already stopped for provided vehicle id and return code 409 (conflict)"() {
@@ -77,7 +79,8 @@ class ParkingStopMvcSpec extends Specification {
 
         Map request = [
                 vehicleId       : testVehicleId,
-                parkingSessionId: testParkingSessionId
+                parkingSessionId: testParkingSessionId,
+                currencyCode    : testCurrencyCode
         ]
 
         when:
@@ -93,7 +96,8 @@ class ParkingStopMvcSpec extends Specification {
 
         Map request = [
                 vehicleId       : testVehicleId,
-                parkingSessionId: testParkingSessionId
+                parkingSessionId: testParkingSessionId,
+                currencyCode    : testCurrencyCode
         ]
 
         when:
@@ -109,7 +113,8 @@ class ParkingStopMvcSpec extends Specification {
 
         Map stopRequest = [
                 vehicleId       : "f4fq32g",
-                parkingSessionId: testParkingSessionId
+                parkingSessionId: testParkingSessionId,
+                currencyCode    : testCurrencyCode
         ]
 
         when:

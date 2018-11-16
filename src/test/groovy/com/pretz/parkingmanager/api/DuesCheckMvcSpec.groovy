@@ -132,7 +132,8 @@ class DuesCheckMvcSpec extends Specification {
         ]
 
         when:
-        def result = mockMvc.perform(get('/dues/check-dues/{id}', request.parkingSessionId))
+        def result = mockMvc.perform(get('/dues/check-dues/{id}', request.parkingSessionId)
+                .param("currencyCode", request.currencyCode))
 
         then:
         result.andExpect(status().isOk())

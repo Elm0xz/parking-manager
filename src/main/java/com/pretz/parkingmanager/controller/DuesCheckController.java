@@ -5,10 +5,7 @@ import com.pretz.parkingmanager.dto.DuesResponseDTO;
 import com.pretz.parkingmanager.service.DuesCheckService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 
@@ -25,10 +22,10 @@ public class DuesCheckController {
         return ResponseEntity.ok(duesCheckService.checkDues(duesRequestDTO));
     }
 
-    //TODO this should be secured apparently
+    //TODO this should be secured  apparently
     @GetMapping("check-dues/{id}")
-    public ResponseEntity<DuesResponseDTO> checkDues(@PathVariable long id) {
+    public ResponseEntity<DuesResponseDTO> checkDues(@PathVariable long id, @RequestParam String currencyCode) {
 
-        return ResponseEntity.ok(duesCheckService.checkDues(id));
+        return ResponseEntity.ok(duesCheckService.checkDues(id, currencyCode));
     }
 }

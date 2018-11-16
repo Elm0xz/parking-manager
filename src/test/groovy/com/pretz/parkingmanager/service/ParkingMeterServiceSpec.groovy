@@ -25,20 +25,20 @@ import java.time.temporal.ChronoUnit
 class ParkingMeterServiceSpec extends Specification {
 
     private ParkingSessionRepository parkingSessionRepository
-    private ParkingSessionMapper parkingSessionMapper
 
     private ParkingMeterService parkingMeterService
 
     def setup() {
         parkingSessionRepository = Mock(ParkingSessionRepository.class)
+        DuesCalculationService duesCalculationService = Stub(DuesCalculationService.class)
 
         ModelMapper modelMapper = new ModelMapper()
         modelMapper.addConverter(new ParkingStartDTOToParkingSessionConverter())
         modelMapper.addConverter(new ParkingSessionToParkingMeterResponseDTOConverter())
 
-        parkingSessionMapper = new ParkingSessionMapper(modelMapper)
+        ParkingSessionMapper parkingSessionMapper = new ParkingSessionMapper(modelMapper)
 
-        parkingMeterService = new ParkingMeterService(parkingSessionRepository, parkingSessionMapper)
+        parkingMeterService = new ParkingMeterService(parkingSessionRepository, parkingSessionMapper, duesCalculationService)
     }
 
     def "should start parking session for vehicle that doesn't have active parking session"() {
@@ -121,7 +121,7 @@ class ParkingMeterServiceSpec extends Specification {
 
     }
 
-    def "should not stop parking session for vehicle that doesn't have active parking session" () {
+    def "should not stop parking session for vehicle that doesn't have active parking session"() {
         given:
         String testVehicleId = "XCD3548"
         long testParkingSessionId = 22

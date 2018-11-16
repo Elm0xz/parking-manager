@@ -10,6 +10,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.util.UriComponents;
+import org.springframework.web.util.UriComponentsBuilder;
 
 import javax.validation.Valid;
 import java.net.URI;
@@ -36,9 +38,17 @@ public class ParkingMeterController {
 
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON_UTF8);
-        headers.setLocation(URI.create("/dues/check-dues/" + parkingStopDTO.getParkingSessionId()));
-        //TODO change this url
+        headers.setLocation(createLocationUri(parkingStopDTO));
 
         return new ResponseEntity<>(stopParkingMeterStatus, headers, HttpStatus.SEE_OTHER);
+    }
+
+    private URI createLocationUri(ParkingStopDTO parkingStopDTO) {
+
+        UriComponents uriComponents = UriComponentsBuilder.fromUriString("/dues/check-dues/")
+                .path(Long.toString(parkingStopDTO.getParkingSessionId()))
+                .queryParam("currencyCode", parkingStopDTO.getCurrencyCode())
+                .build();
+        return uriComponents.toUri();
     }
 }
