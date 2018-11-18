@@ -23,7 +23,7 @@ public class ParkingMeterController {
 
     private final ParkingMeterService parkingMeterService;
 
-    @PostMapping("start-parking")
+    @PostMapping("start")
     public ResponseEntity<ParkingMeterResponseDTO> startParkingMeter(@RequestBody @Valid ParkingStartDTO parkingStartDTO) {
 
         ParkingMeterResponseDTO startParkingMeterStatus = parkingMeterService.startParkingMeter(parkingStartDTO);
@@ -31,7 +31,7 @@ public class ParkingMeterController {
         return ResponseEntity.ok(startParkingMeterStatus);
     }
 
-    @PostMapping("stop-parking")
+    @PostMapping("stop")
     public ResponseEntity<ParkingMeterResponseDTO> stopParkingMeter(@RequestBody @Valid ParkingStopDTO parkingStopDTO) {
 
         ParkingMeterResponseDTO stopParkingMeterStatus = parkingMeterService.stopParkingMeter(parkingStopDTO);
@@ -45,7 +45,7 @@ public class ParkingMeterController {
 
     private URI createLocationUri(ParkingStopDTO parkingStopDTO) {
 
-        UriComponents uriComponents = UriComponentsBuilder.fromUriString("/dues/check-dues/")
+        UriComponents uriComponents = UriComponentsBuilder.fromUriString("/dues/check/")
                 .path(Long.toString(parkingStopDTO.getParkingSessionId()))
                 .queryParam("currencyCode", parkingStopDTO.getCurrencyCode())
                 .build();

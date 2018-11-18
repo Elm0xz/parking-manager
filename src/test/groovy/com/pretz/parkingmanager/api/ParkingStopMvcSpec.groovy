@@ -60,7 +60,7 @@ class ParkingStopMvcSpec extends Specification {
         ]
 
         when:
-        def result = mockMvc.perform(post('/parking-meter/stop-parking').contentType(APPLICATION_JSON).content(toJson(request)))
+        def result = mockMvc.perform(post('/parking-meter/stop').contentType(APPLICATION_JSON).content(toJson(request)))
 
         then:
         result.andExpect(status().isSeeOther())
@@ -70,7 +70,7 @@ class ParkingStopMvcSpec extends Specification {
         result.andExpect(jsonPath('$.parkingSessionId').isNotEmpty())
         result.andExpect(jsonPath('$.parkingSessionId').isNumber())
         result.andExpect(jsonPath('$.timestamp').isNotEmpty())
-        result.andExpect(redirectedUrlPattern("/dues/check-dues/" + testParkingSessionId + "?currencyCode=" + testCurrencyCode))
+        result.andExpect(redirectedUrlPattern("/dues/check/" + testParkingSessionId + "?currencyCode=" + testCurrencyCode))
     }
 
     def "Should detect that parking has already stopped for provided vehicle id and return code 409 (conflict)"() {
@@ -84,7 +84,7 @@ class ParkingStopMvcSpec extends Specification {
         ]
 
         when:
-        def result = mockMvc.perform(post('/parking-meter/stop-parking').contentType(APPLICATION_JSON).content(toJson(request)))
+        def result = mockMvc.perform(post('/parking-meter/stop').contentType(APPLICATION_JSON).content(toJson(request)))
 
         then:
         result.andExpect(status().isConflict())
@@ -101,7 +101,7 @@ class ParkingStopMvcSpec extends Specification {
         ]
 
         when:
-        def result = mockMvc.perform(post('/parking-meter/stop-parking').contentType(APPLICATION_JSON).content(toJson(request)))
+        def result = mockMvc.perform(post('/parking-meter/stop').contentType(APPLICATION_JSON).content(toJson(request)))
 
         then:
         result.andExpect(status().isConflict())
@@ -118,7 +118,7 @@ class ParkingStopMvcSpec extends Specification {
         ]
 
         when:
-        def stopResult = mockMvc.perform(post('/parking-meter/stop-parking').contentType(APPLICATION_JSON).content(toJson(stopRequest)))
+        def stopResult = mockMvc.perform(post('/parking-meter/stop').contentType(APPLICATION_JSON).content(toJson(stopRequest)))
 
         then:
         stopResult.andExpect(status().isBadRequest())

@@ -16,14 +16,13 @@ public class DuesCheckController {
 
     private final DuesCheckService duesCheckService;
 
-    @GetMapping("check-dues")
+    @GetMapping("check")
     public ResponseEntity<DuesResponseDTO> checkDues(@Valid DuesRequestDTO duesRequestDTO) {
 
         return ResponseEntity.ok(duesCheckService.checkDues(duesRequestDTO));
     }
 
-    //TODO this should be secured  apparently
-    @GetMapping("check-dues/{id}")
+    @GetMapping("check/{id}")
     public ResponseEntity<DuesResponseDTO> checkDues(@PathVariable long id, @RequestParam String currencyCode) {
 
         return ResponseEntity.ok(duesCheckService.checkDues(id, currencyCode));
