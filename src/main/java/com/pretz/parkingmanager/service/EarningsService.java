@@ -1,7 +1,7 @@
 package com.pretz.parkingmanager.service;
 
 import com.pretz.parkingmanager.domain.ParkingSession;
-import com.pretz.parkingmanager.exception.EarningsCheckException;
+import com.pretz.parkingmanager.dto.EarningsResponseDTO;
 import com.pretz.parkingmanager.repository.ParkingSessionRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -19,15 +19,19 @@ public class EarningsService {
 
     private final ParkingSessionRepository parkingSessionRepository;
 
-    public BigDecimal checkEarnings(Date date) {
+    public EarningsResponseDTO checkEarnings(Date date) {
 
         List<ParkingSession> parkingSessionsFinishedOnDate = parkingSessionRepository.findAllByStopTimeBetween(new Timestamp(date.getTime()),
                 Timestamp.from(date.toInstant().plus(1, ChronoUnit.DAYS)));
 
-        return parkingSessionsFinishedOnDate.stream()
+        BigDecimal earningsSum = parkingSessionsFinishedOnDate.stream()
                 .map(ParkingSession::getDues)
                 .reduce(BigDecimal::add)
                 .map(p -> p.setScale(2, RoundingMode.HALF_UP))
-                .orElseThrow(EarningsCheckException::new);
+                .orElse(BigDecimal.ZERO.setScale(2, BigDecimal.ROUND_HALF_UP));
+
+        return EarningsResponseDTO.builder()
+                .earnings(earningsSum)
+                .build();
     }
 }

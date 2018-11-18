@@ -28,9 +28,4 @@ public class ParkingSessionExceptionHandler extends ResponseEntityExceptionHandl
     @ExceptionHandler(value = InvalidParkingSessionException.class)
     protected void handleInvalidParkingSession(InvalidParkingSessionException ex) {
     }
-
-    @ResponseStatus(code = HttpStatus.BAD_REQUEST, reason = "Impossible to check earnings")
-    @ExceptionHandler(value = EarningsCheckException.class)
-    protected void handleEarningsCheckException(EarningsCheckException ex) {
-    }
 }

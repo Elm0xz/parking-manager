@@ -21,7 +21,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.MOCK)
 @AutoConfigureMockMvc
 @Category(IntegrationTest.class)
-class VehicleStatusCheckMvcSpec extends Specification {
+class VehicleStatusMvcSpec extends Specification {
 
     @Autowired
     MockMvc mockMvc
