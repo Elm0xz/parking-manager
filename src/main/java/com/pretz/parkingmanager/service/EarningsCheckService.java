@@ -15,7 +15,7 @@ import java.util.List;
 
 @Service
 @RequiredArgsConstructor
-public class EarningsService {
+public class EarningsCheckService {
 
     private final ParkingSessionRepository parkingSessionRepository;
 

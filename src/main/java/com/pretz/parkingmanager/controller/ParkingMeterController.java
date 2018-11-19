@@ -4,6 +4,9 @@ import com.pretz.parkingmanager.dto.ParkingMeterResponseDTO;
 import com.pretz.parkingmanager.dto.ParkingStartDTO;
 import com.pretz.parkingmanager.dto.ParkingStopDTO;
 import com.pretz.parkingmanager.service.ParkingMeterService;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiImplicitParam;
+import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -16,6 +19,7 @@ import org.springframework.web.util.UriComponentsBuilder;
 import javax.validation.Valid;
 import java.net.URI;
 
+@Api(value = "/parking-meter", tags = "Parking meter (driver)")
 @RestController
 @RequestMapping("/parking-meter/")
 @RequiredArgsConstructor
@@ -23,6 +27,8 @@ public class ParkingMeterController {
 
     private final ParkingMeterService parkingMeterService;
 
+    @ApiOperation(value = "Start parking time for a vehicle")
+    @ApiImplicitParam(name = "parkingStartDTO", value = "Vehicle id and parking rate type (1 - regular, 2 - disabled)", dataType = "ParkingStartDTO", required = true)
     @PostMapping("start")
     public ResponseEntity<ParkingMeterResponseDTO> startParkingMeter(@RequestBody @Valid ParkingStartDTO parkingStartDTO) {
 
@@ -31,6 +37,8 @@ public class ParkingMeterController {
         return ResponseEntity.ok(startParkingMeterStatus);
     }
 
+    @ApiOperation(value = "Stop parking time for a vehicle")
+    @ApiImplicitParam(name = "parkingStopDTO", value = "Vehicle id, parking session id (from parking start) and parking rate type (1 - regular, 2 - disabled)", dataType = "ParkingStopDTO", required = true)
     @PostMapping("stop")
     public ResponseEntity<ParkingMeterResponseDTO> stopParkingMeter(@RequestBody @Valid ParkingStopDTO parkingStopDTO) {
 
