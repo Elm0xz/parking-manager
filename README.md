@@ -23,17 +23,18 @@ It was written as a recruitment task and also used as opportunity to exercise RE
 * Spock 1.1
 
 ## Setup
-Run start.sh script.
+Run start.sh script. After setup, run http://localhost:8080/swagger-parking-manager-api to access API endpoints documentation.
 
 ## Features
 Features already implemented:
 * Starting parking meter
 * Stopping parking meter
 * Checking dues
-
-To-do list:
 * Vehicle status control
 * Checking earnings for parking manager
+
+To-do int the future:
+
 * Authorization rules
 
 ## Status
