@@ -1,0 +1,16 @@
+parking-manager:
+  swagger:
+    title: Parking Manager API
+    description: Parking Manager REST API
+    contact-name: Przemyslaw Etz
+    contact-address: przemyslaw.etz@gmail.com
+    contact-url: --
+    path: swagger-parking-manager-api
+
+spring:
+  profiles:
+    active: dev
+  h2:
+    console:
+      path: /h2
+      enabled: true
