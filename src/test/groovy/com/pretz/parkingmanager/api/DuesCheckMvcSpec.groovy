@@ -65,7 +65,7 @@ class DuesCheckMvcSpec extends Specification {
         ]
 
         when:
-        def result = mockMvc.perform(get('/dues/check')
+        def result = mockMvc.perform(get('/dues/')
                 .param("vehicleId", request.vehicleId)
                 .param("parkingSessionId", request.parkingSessionId)
                 .param("currencyCode", request.currencyCode))
@@ -89,7 +89,7 @@ class DuesCheckMvcSpec extends Specification {
         ]
 
         when:
-        def result = mockMvc.perform(get('/dues/check')
+        def result = mockMvc.perform(get('/dues/')
                 .param("vehicleId", request.vehicleId)
                 .param("parkingSessionId", request.parkingSessionId)
                 .param("currencyCode", request.currencyCode))
@@ -110,7 +110,7 @@ class DuesCheckMvcSpec extends Specification {
         ]
 
         when:
-        def result = mockMvc.perform(get('/dues/check')
+        def result = mockMvc.perform(get('/dues/')
                 .param("vehicleId", request.vehicleId)
                 .param("parkingSessionId", request.parkingSessionId)
                 .param("currencyCode", request.currencyCode))
@@ -132,7 +132,7 @@ class DuesCheckMvcSpec extends Specification {
         ]
 
         when:
-        def result = mockMvc.perform(get('/dues/check/{id}', request.parkingSessionId)
+        def result = mockMvc.perform(get('/dues/{id}', request.parkingSessionId)
                 .param("currencyCode", request.currencyCode))
 
         then:
@@ -155,7 +155,7 @@ class DuesCheckMvcSpec extends Specification {
         ]
 
         when:
-        def result = mockMvc.perform(get('/dues/check')
+        def result = mockMvc.perform(get('/dues/')
                 .param("vehicleId", request.vehicleId)
                 .param("parkingSessionId", request.parkingSessionId)
                 .param("currencyCode", request.currencyCode))

@@ -12,9 +12,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-@Api(value = "/vehicle", tags = "Vehicle status (parking operator)")
+@Api(value = "/vehicle-status", tags = "Vehicle status (parking operator)")
 @RestController
-@RequestMapping("/vehicle/")
+@RequestMapping("/vehicle-status/")
 @RequiredArgsConstructor
 public class VehicleStatusController {
 
@@ -24,7 +24,7 @@ public class VehicleStatusController {
     @ApiImplicitParams({
             @ApiImplicitParam(name = "vehicleId", value = "Vehicle Id to be checked", paramType = "query", required = true)
     })
-    @GetMapping("status")
+    @GetMapping()
     public ResponseEntity<Boolean> isParkingMeterStarted(@RequestParam String vehicleId) {
         return ResponseEntity.ok(vehicleStatusService.checkVehicleStatus(vehicleId));
     }

@@ -27,7 +27,7 @@ public class DuesCalculationService {
 
     private CurrencyConverter getCurrencyConverter(String currencyCode) {
 
-        String currencyKey = currencyCode + "CurrencyConverter";
+        String currencyKey = currencyCode + CurrencyConverter.class.getSimpleName();
         return Optional.ofNullable(currencyConverters.get(currencyKey)).orElseThrow(UnknownCurrencyException::new);
     }
 }

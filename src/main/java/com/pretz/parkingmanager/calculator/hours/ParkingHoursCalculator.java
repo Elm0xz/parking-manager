@@ -4,5 +4,7 @@ import com.pretz.parkingmanager.domain.ParkingSession;
 
 public interface ParkingHoursCalculator {
 
-    double calculateParkingHours(ParkingSession parkingSession);
+    static final double MILLIS_IN_HOUR = 1000.0 * 60.0 * 60.0;
+
+    long calculateParkingHours(ParkingSession parkingSession);
 }

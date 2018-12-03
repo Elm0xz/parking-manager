@@ -27,7 +27,7 @@ public class EarningsCheckController {
     @ApiImplicitParams({
             @ApiImplicitParam(name = "date", value = "Date checked for earnings in YYYY-MM-DD format", paramType = "query", required = true)
     })
-    @GetMapping("check")
+    @GetMapping()
     public ResponseEntity<EarningsResponseDTO> checkEarnings(@DateTimeFormat(iso = DateTimeFormat.ISO.DATE) Date date) {
 
         return ResponseEntity.ok(earningsCheckService.checkEarnings(date));

@@ -12,7 +12,7 @@ import java.time.temporal.ChronoUnit;
 @Profile("test")
 public class FakeParkingHoursCalculator implements ParkingHoursCalculator {
     @Override
-    public double calculateParkingHours(ParkingSession parkingSession) {
+    public long calculateParkingHours(ParkingSession parkingSession) {
 
         Timestamp parkingStartTime = Timestamp.from(Instant.now()
                 .minus(2, ChronoUnit.HOURS)
@@ -21,6 +21,6 @@ public class FakeParkingHoursCalculator implements ParkingHoursCalculator {
 
         Timestamp presentTime = Timestamp.from(Instant.now());
 
-        return (presentTime.getTime() - parkingStartTime.getTime()) / (1000.0 * 60.0 * 60.0);
+        return (long) ((presentTime.getTime() - parkingStartTime.getTime()) / MILLIS_IN_HOUR);
     }
 }

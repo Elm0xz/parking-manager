@@ -53,7 +53,7 @@ public class ParkingMeterController {
 
     private URI createLocationUri(ParkingStopDTO parkingStopDTO) {
 
-        UriComponents uriComponents = UriComponentsBuilder.fromUriString("/dues/check/")
+        UriComponents uriComponents = UriComponentsBuilder.fromUriString("/dues/")
                 .path(Long.toString(parkingStopDTO.getParkingSessionId()))
                 .queryParam("currencyCode", parkingStopDTO.getCurrencyCode())
                 .build();

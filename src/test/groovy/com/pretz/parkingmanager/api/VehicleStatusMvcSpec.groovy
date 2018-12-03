@@ -41,7 +41,7 @@ class VehicleStatusMvcSpec extends Specification {
         initParkingSession(testVehicleId)
 
         when:
-        def result = mockMvc.perform(get('/vehicle/status')
+        def result = mockMvc.perform(get('/vehicle-status/')
                 .param("vehicleId", testVehicleId))
 
         then:
@@ -54,7 +54,7 @@ class VehicleStatusMvcSpec extends Specification {
         given:
 
         when:
-        def result = mockMvc.perform(get('/vehicle/status')
+        def result = mockMvc.perform(get('/vehicle-status/')
                 .param("vehicleId", testVehicleId))
 
         then:

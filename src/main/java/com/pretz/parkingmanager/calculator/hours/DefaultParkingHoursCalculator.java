@@ -11,11 +11,11 @@ import java.time.Instant;
 public class DefaultParkingHoursCalculator implements ParkingHoursCalculator {
 
     @Override
-    public double calculateParkingHours(ParkingSession parkingSession) {
+    public long calculateParkingHours(ParkingSession parkingSession) {
 
         Timestamp parkingStartTime = parkingSession.getStartTime();
         Timestamp presentTime = Timestamp.from(Instant.now());
 
-        return (presentTime.getTime() - parkingStartTime.getTime()) / (1000.0 * 60.0 * 60.0);
+        return (long) ((presentTime.getTime() - parkingStartTime.getTime()) / MILLIS_IN_HOUR);
     }
 }

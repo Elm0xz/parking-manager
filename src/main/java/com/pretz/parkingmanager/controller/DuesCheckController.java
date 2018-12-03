@@ -9,7 +9,11 @@ import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 
 import javax.validation.Valid;
 
@@ -27,7 +31,7 @@ public class DuesCheckController {
             @ApiImplicitParam(name = "parkingSessionId", value = "Id of parking session (gained on parking meter start)", dataType = "long", required = true),
             @ApiImplicitParam(name = "vehicleId", value = "Id of parked vehicle", required = true)
     })
-    @GetMapping("check")
+    @GetMapping()
     public ResponseEntity<DuesResponseDTO> checkDues(@Valid DuesRequestDTO duesRequestDTO) {
 
         return ResponseEntity.ok(duesCheckService.checkDues(duesRequestDTO));
@@ -38,7 +42,7 @@ public class DuesCheckController {
             @ApiImplicitParam(name = "id", value = "Id of parking session", required = true, dataType = "long"),
             @ApiImplicitParam(name = "currencyCode", value = "Code of currency used in dues calculation", required = true, defaultValue = "PLN")
     })
-    @GetMapping("check/{id}")
+    @GetMapping("{id}")
     public ResponseEntity<DuesResponseDTO> checkDues(@PathVariable long id, @RequestParam String currencyCode) {
 
         return ResponseEntity.ok(duesCheckService.checkDues(id, currencyCode));

@@ -75,7 +75,7 @@ class EarningsMvcSpec extends Specification {
         String testDate = "2018-11-10"
 
         when:
-        def result = mockMvc.perform(get('/earnings/check')
+        def result = mockMvc.perform(get('/earnings/')
                 .param("date", testDate))
 
         then:
@@ -90,7 +90,7 @@ class EarningsMvcSpec extends Specification {
         String testDate = "2018-11-14"
 
         when:
-        def result = mockMvc.perform(get('/earnings/check')
+        def result = mockMvc.perform(get('/earnings/')
                 .param("date", testDate))
 
         then:

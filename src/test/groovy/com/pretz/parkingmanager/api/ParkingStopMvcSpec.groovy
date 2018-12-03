@@ -70,7 +70,7 @@ class ParkingStopMvcSpec extends Specification {
         result.andExpect(jsonPath('$.parkingSessionId').isNotEmpty())
         result.andExpect(jsonPath('$.parkingSessionId').isNumber())
         result.andExpect(jsonPath('$.timestamp').isNotEmpty())
-        result.andExpect(redirectedUrlPattern("/dues/check/" + testParkingSessionId + "?currencyCode=" + testCurrencyCode))
+        result.andExpect(redirectedUrlPattern("/dues/" + testParkingSessionId + "?currencyCode=" + testCurrencyCode))
     }
 
     def "Should detect that parking has already stopped for provided vehicle id and return code 409 (conflict)"() {
